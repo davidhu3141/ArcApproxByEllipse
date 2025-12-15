@@ -80,18 +80,10 @@ function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, subtitle, heig
       const thetaRad = valid ? thetaHalfRad : 0.5
       const arcWidth = valid ? 2 * r * Math.sin(thetaRad) : 2
       const arcHeight = valid ? r - r * Math.cos(thetaRad) : 1
-      let xMinRaw = -arcWidth / 2
-      let xMaxRaw = arcWidth / 2
-      let yMinRaw = valid ? r * Math.cos(thetaRad) : -1
-      let yMaxRaw = valid ? r : 1
-
-      if (bestEllipse) {
-        const { a, b, h } = bestEllipse
-        xMinRaw = Math.min(xMinRaw, -a)
-        xMaxRaw = Math.max(xMaxRaw, a)
-        yMinRaw = Math.min(yMinRaw, h - b)
-        yMaxRaw = Math.max(yMaxRaw, h + b)
-      }
+      const xMinRaw = -arcWidth / 2
+      const xMaxRaw = arcWidth / 2
+      const yMinRaw = valid ? r * Math.cos(thetaRad) : -1
+      const yMaxRaw = valid ? r : 1
 
       const marginW = Math.max(arcWidth || 0, Math.abs(xMinRaw) + Math.abs(xMaxRaw), 1)
       const marginH = Math.max(arcHeight || 0, Math.abs(yMaxRaw - yMinRaw), 1)
@@ -143,12 +135,12 @@ function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, subtitle, heig
         const startPt = { x: r * Math.cos(start), y: r * Math.sin(start) }
         const endPt = { x: r * Math.cos(end), y: r * Math.sin(end) }
 
-        const startScreen = -(Math.PI / 2 + thetaRad)
-        const endScreen = -(Math.PI / 2 - thetaRad)
-
-        const arcPath = d3.path()
-        arcPath.arc(xScale(0), yScale(0), r * scale, startScreen, endScreen)
-        svg.append('path').attr('d', arcPath.toString()).attr('class', 'arc-path')
+        svg
+          .append('circle')
+          .attr('class', 'arc-path')
+          .attr('cx', xScale(0))
+          .attr('cy', yScale(0))
+          .attr('r', r * scale)
 
         svg
           .append('line')
