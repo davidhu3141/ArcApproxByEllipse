@@ -95,15 +95,15 @@ export function runEllipseSearch({ radius, thetaDeg, tolerance }) {
           const t1 = Math.PI - t0
           if (!(t0 < Math.PI / 2 && t1 > t0)) continue
 
-          const steps = 30
+          const steps = 10
           const ts = d3.range(steps).map((idx) => t0 + ((Math.PI / 2 - t0) * idx) / (steps - 1))
           const series = ts.map((tVal) => {
             const x = a * Math.cos(tVal)
             const y = b * Math.sin(tVal) + h
             const rTilde = Math.hypot(x, y)
-            return { tDeg: (tVal * 180) / Math.PI, err: Math.abs(rTilde - r) }
+            return { tDeg: (tVal * 180) / Math.PI, err: rTilde - r }
           })
-          const maxErr = d3.max(series, (dVal) => dVal.err) || Infinity
+          const maxErr = d3.max(series, (dVal) => Math.abs(dVal.err)) || Infinity
           attemptsList.push({
             id: `att-${attemptId}`,
             a,

@@ -33,13 +33,14 @@ function ErrorChart({ series, tolerance, title, subtitle, height = 260 }) {
 
     const xExtent = d3.extent(series, (d) => d.tDeg)
     const xDomain = xExtent[0] === xExtent[1] ? [xExtent[0] - 1, xExtent[1] + 1] : xExtent
+    const yMin = Math.min(0, d3.min(series, (d) => d.err) || 0) * 1.1
     const yMax = Math.max(tolerance, d3.max(series, (d) => d.err) || 0) * 1.1
     const xScale = d3.scaleLinear().domain(xDomain).range([padding, width - padding])
-    const yScale = d3.scaleLinear().domain([0, yMax]).range([height - padding, padding])
+    const yScale = d3.scaleLinear().domain([yMin, yMax]).range([height - padding, padding])
 
     svg
       .append('g')
-      .attr('transform', `translate(0, ${height - padding})`)
+      .attr('transform', `translate(0, ${yScale(0)})`)
       .call(d3.axisBottom(xScale).ticks(6))
       .call((g) => g.selectAll('text').attr('class', 'axis-tick'))
       .call((g) => g.selectAll('path,line').attr('class', 'axis-line'))
@@ -58,6 +59,14 @@ function ErrorChart({ series, tolerance, title, subtitle, height = 260 }) {
       .attr('x2', width - padding)
       .attr('y1', yScale(tolerance))
       .attr('y2', yScale(tolerance))
+
+    svg
+      .append('line')
+      .attr('class', 'tolerance-line')
+      .attr('x1', padding)
+      .attr('x2', width - padding)
+      .attr('y1', yScale(-tolerance))
+      .attr('y2', yScale(-tolerance))
 
     const line = d3
       .line()
