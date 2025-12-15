@@ -285,15 +285,15 @@ h3 {
 }
 
 .attempt-dot--fail {
-  fill: rgba(255, 120, 120, 0.8);
+  fill: #7b8190;
 }
 
 .attempt-dot--pass {
-  fill: rgba(158, 177, 217, 0.8);
+  fill: #72e1a4;
 }
 
 .attempt-dot--best {
-  fill: #7cf3df;
+  fill: #00b752;
   stroke: rgba(0, 0, 0, 0.6);
   stroke-width: 1.6;
   opacity: 1;
