@@ -233,6 +233,14 @@ h3 {
   filter: drop-shadow(0 0 12px rgba(124, 243, 223, 0.45));
 }
 
+.ellipse-path {
+  fill: none;
+  stroke: #8fb5ff;
+  stroke-width: 2;
+  stroke-dasharray: 4 3;
+  opacity: 0.9;
+}
+
 .chord-line {
   stroke: rgba(255, 214, 102, 0.9);
   stroke-width: 2.2;
@@ -255,6 +263,40 @@ h3 {
 .chart-note {
   fill: var(--muted);
   font-size: 11px;
+}
+
+.error-line {
+  fill: none;
+  stroke: #7cf3df;
+  stroke-width: 2.2;
+}
+
+.tolerance-line {
+  stroke: rgba(255, 143, 143, 0.9);
+  stroke-width: 1.6;
+  stroke-dasharray: 6 4;
+}
+
+.attempt-dot {
+  stroke: rgba(0, 0, 0, 0.35);
+  stroke-width: 1;
+  fill: #9eb1d9;
+  opacity: 0.8;
+}
+
+.attempt-dot--fail {
+  fill: rgba(255, 120, 120, 0.8);
+}
+
+.attempt-dot--pass {
+  fill: rgba(158, 177, 217, 0.8);
+}
+
+.attempt-dot--best {
+  fill: #7cf3df;
+  stroke: rgba(0, 0, 0, 0.6);
+  stroke-width: 1.6;
+  opacity: 1;
 }
 
 @media (max-width: 840px) {
