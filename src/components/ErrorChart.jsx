@@ -31,7 +31,11 @@ function ErrorChart({ series, tolerance, title, subtitle, height = 260 }) {
       return
     }
 
-    const xExtent = d3.extent(series, (d) => d.tDeg)
+    let seriesAfter90 = [...series].reverse().map(e => ({ ...e, deg: 180 - e.deg }));
+    seriesAfter90.shift();
+    series = series.concat(seriesAfter90);
+
+    const xExtent = d3.extent(series, (d) => d.deg)
     const xDomain = xExtent[0] === xExtent[1] ? [xExtent[0] - 1, xExtent[1] + 1] : xExtent
     const yMin = Math.min(0, d3.min(series, (d) => d.err) || 0) * 1.1
     const yMax = Math.max(tolerance, d3.max(series, (d) => d.err) || 0) * 1.1
@@ -70,7 +74,7 @@ function ErrorChart({ series, tolerance, title, subtitle, height = 260 }) {
 
     const line = d3
       .line()
-      .x((d) => xScale(d.tDeg))
+      .x((d) => xScale(d.deg))
       .y((d) => yScale(d.err))
       .curve(d3.curveMonotoneX)
 

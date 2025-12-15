@@ -9,13 +9,19 @@ import './App.css'
 function App() {
   const [radius, setRadius] = useState('120')
   const [theta, setTheta] = useState('45')
-  const [chord, setChord] = useState('150')
+  const [chord, setChord] = useState(() => {
+    const r = 120
+    const t = 45
+    return (2 * r * Math.sin(toRad(t / 2))).toFixed(4)
+  })
   const [tolerance, setTolerance] = useState('0.01')
   const [offsetStepsD, setOffsetStepsD] = useState('10')
   const [offsetStepsD1, setOffsetStepsD1] = useState('10')
   const [offsetStepsD2, setOffsetStepsD2] = useState('10')
   const [tsSteps, setTsSteps] = useState('10')
   const [skipWorse, setSkipWorse] = useState(false)
+  const [forceZeroD2, setForceZeroD2] = useState(false)
+  const [showAdvanced, setShowAdvanced] = useState(true)
   const [attempts, setAttempts] = useState([])
   const [bestAttempt, setBestAttempt] = useState(null)
   const [errorSeries, setErrorSeries] = useState([])
@@ -66,6 +72,7 @@ function App() {
       offsetsStepsD2: parseInt(offsetStepsD2, 10),
       tsSteps: parseInt(tsSteps, 10),
       skipWorseThanBest: skipWorse,
+      constrainD2ForceZero: forceZeroD2,
     })
     setAttempts(a)
     setBestAttempt(best)
@@ -196,67 +203,120 @@ function App() {
       <section className="panel">
         <div className="panel__head">
           <div>
+            <p className="eyebrow">Best Result</p>
+            <h2>Current best ellipse</h2>
+          </div>
+        </div>
+        {bestAttempt ? (
+          <div className="best-grid">
+            <div className="stat">
+              <p className="stat-label">a</p>
+              <p className="stat-value">{formatNum(bestAttempt.a, 4)}</p>
+            </div>
+            <div className="stat">
+              <p className="stat-label">b</p>
+              <p className="stat-value">{formatNum(bestAttempt.b, 4)}</p>
+            </div>
+            <div className="stat">
+              <p className="stat-label">h (center y)</p>
+              <p className="stat-value">{formatNum(bestAttempt.h, 4)}</p>
+            </div>
+            <div className="stat">
+              <p className="stat-label">max err</p>
+              <p className="stat-value">{formatNum(bestAttempt.err, 6)}</p>
+            </div>
+            <div className="stat">
+              <p className="stat-label">a + b</p>
+              <p className="stat-value">{formatNum(bestAttempt.a + bestAttempt.b, 4)}</p>
+            </div>
+          </div>
+        ) : (
+          <p className="helper-text">No passing ellipse yet.</p>
+        )}
+      </section>
+
+      <section className="panel">
+        <div className="panel__head">
+          <div>
             <p className="eyebrow">Advanced</p>
             <h2>Search settings</h2>
           </div>
-          <p className="helper-text">
-            Control sampling steps for offsets (d, d1, d2) and arc sampling (ts). Optionally skip attempts whose a+b is already worse than the best pass.
-          </p>
+          <div className="panel__actions">
+            <button className="link-btn" type="button" onClick={() => setShowAdvanced((v) => !v)}>
+              {showAdvanced ? 'Collapse' : 'Expand'}
+            </button>
+          </div>
         </div>
-        <div className="input-grid">
-          <label className="field">
-            <span>Offset steps for d</span>
-            <input
-              type="number"
-              min="2"
-              max="50"
-              value={offsetStepsD}
-              onChange={(e) => setOffsetStepsD(e.target.value)}
-              placeholder="2 - 20"
-            />
-          </label>
-          <label className="field">
-            <span>Offset steps for d1</span>
-            <input
-              type="number"
-              min="2"
-              max="50"
-              value={offsetStepsD1}
-              onChange={(e) => setOffsetStepsD1(e.target.value)}
-              placeholder="2 - 20"
-            />
-          </label>
-          <label className="field">
-            <span>Offset steps for d2</span>
-            <input
-              type="number"
-              min="2"
-              max="50"
-              value={offsetStepsD2}
-              onChange={(e) => setOffsetStepsD2(e.target.value)}
-              placeholder="2 - 20"
-            />
-          </label>
-          <label className="field">
-            <span>Arc sample steps (ts)</span>
-            <input
-              type="number"
-              min="4"
-              max="50"
-              value={tsSteps}
-              onChange={(e) => setTsSteps(e.target.value)}
-              placeholder="4 - 50"
-            />
-          </label>
-          <label className="field checkbox-field">
-            <input
-              type="checkbox"
-              checked={skipWorse}
-              onChange={(e) => setSkipWorse(e.target.checked)}
-            />
-            <span>Skip when a+b already better than current attempt</span>
-          </label>
-        </div>
+        {showAdvanced && (
+          <>
+            <p className="helper-text">
+              Control sampling steps for offsets (d, d1, d2) and arc sampling (ts). Optionally skip attempts whose a+b is already worse than the best pass.
+            </p>
+            <div className="input-grid">
+              <label className="field">
+                <span>Offset steps for d</span>
+                <input
+                  type="number"
+                  min="2"
+                  max="20"
+                  value={offsetStepsD}
+                  onChange={(e) => setOffsetStepsD(e.target.value)}
+                  placeholder="2 - 20"
+                />
+              </label>
+              <label className="field">
+                <span>Offset steps for d1</span>
+                <input
+                  type="number"
+                  min="2"
+                  max="20"
+                  value={offsetStepsD1}
+                  onChange={(e) => setOffsetStepsD1(e.target.value)}
+                  placeholder="2 - 20"
+                />
+              </label>
+              <label className="field">
+                <span>Offset steps for d2</span>
+                <input
+                  type="number"
+                  min="2"
+                  max="20"
+                  value={offsetStepsD2}
+                  onChange={(e) => setOffsetStepsD2(e.target.value)}
+                  placeholder="2 - 20"
+                  disabled={forceZeroD2}
+                />
+              </label>
+              <label className="field">
+                <span>Arc sample steps (ts)</span>
+                <input
+                  type="number"
+                  min="4"
+                  max="50"
+                  value={tsSteps}
+                  onChange={(e) => setTsSteps(e.target.value)}
+                  placeholder="4 - 50"
+                />
+              </label>
+              <label className="field checkbox-field">
+                <input
+                  type="checkbox"
+                  checked={skipWorse}
+                  onChange={(e) => setSkipWorse(e.target.checked)}
+                />
+                <span>Skip when a+b already better than current attempt</span>
+              </label>
+              <label className="field checkbox-field">
+                <input
+                  type="checkbox"
+                  checked={forceZeroD2}
+                  onChange={(e) => setForceZeroD2(e.target.checked)}
+                />
+                <span>Force d2 = 0 (disable d2 sampling)</span>
+              </label>
+            </div>
+          </>
+        )}
       </section>
     </div>
   )

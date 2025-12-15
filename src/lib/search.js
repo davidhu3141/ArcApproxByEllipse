@@ -54,6 +54,7 @@ export function runEllipseSearch({
   offsetsStepsD2 = 10,
   tsSteps = 10,
   skipWorseThanBest = false,
+  constrainD2ForceZero = false,
 }) {
   const r = Number(radius)
   const tDeg = Number(thetaDeg)
@@ -73,14 +74,16 @@ export function runEllipseSearch({
   const clampOffsetsD2 = Math.min(Math.max(Math.round(offsetsStepsD2), 2), 20)
   const clampTs = Math.min(Math.max(Math.round(tsSteps), 4), 50)
 
-  const sampleOffsets = (n) => {
-    const step = (2 * e) / (n - 1)
-    return Array.from({ length: n }, (_, i) => -e + i * step)
+  const sampleOffsets = (n, allowNegative = true) => {
+    const span = allowNegative ? 2 * e : e
+    const start = allowNegative ? -e : 0
+    const step = span / (n - 1)
+    return Array.from({ length: n }, (_, i) => start + i * step)
   }
 
-  const ds = sampleOffsets(clampOffsetsD)
-  const d1s = sampleOffsets(clampOffsetsD1)
-  const d2s = sampleOffsets(clampOffsetsD2)
+  const ds = sampleOffsets(clampOffsetsD, true)
+  const d1s = sampleOffsets(clampOffsetsD1, true)
+  const d2s = constrainD2ForceZero ? [0] : sampleOffsets(clampOffsetsD2, true)
 
   let attemptId = 0
   let bestAcceptedSum = Infinity
@@ -119,7 +122,8 @@ export function runEllipseSearch({
             const x = a * Math.cos(tVal)
             const y = b * Math.sin(tVal) + h
             const rTilde = Math.hypot(x, y)
-            return { tDeg: (tVal * 180) / Math.PI, err: rTilde - r }
+            const deg = Math.acos(x / Math.hypot(x, y)) * 180 / Math.PI
+            return { deg, tDeg: (tVal * 180) / Math.PI, err: rTilde - r }
           })
           const maxErr = d3.max(series, (dVal) => Math.abs(dVal.err)) || Infinity
           attemptsList.push({

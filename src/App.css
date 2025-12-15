@@ -118,6 +118,45 @@ h3 {
   gap: 10px;
 }
 
+.panel__actions {
+  display: flex;
+  gap: 8px;
+}
+
+.best-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+}
+
+.stat {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.stat-label {
+  margin: 0 0 6px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.stat-value {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+}
+
+.link-btn {
+  background: none;
+  border: 1px solid var(--border);
+  color: var(--muted);
+  padding: 6px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
 .helper-text {
   margin: 0;
   color: var(--muted);
@@ -166,6 +205,11 @@ h3 {
 .checkbox-field input[type='checkbox'] {
   width: auto;
   accent-color: var(--accent);
+}
+
+.field input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .field input:focus {
