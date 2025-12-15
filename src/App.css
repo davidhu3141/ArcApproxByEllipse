@@ -295,6 +295,13 @@ h3 {
   stroke-dasharray: 4 3;
 }
 
+.endpoint-dot {
+  fill: #ffd666;
+  stroke: rgba(0, 0, 0, 0.6);
+  stroke-width: 1.4;
+  filter: drop-shadow(0 0 6px rgba(255, 214, 102, 0.6));
+}
+
 .ellipse-path {
   fill: none;
   stroke: #8fb5ff;

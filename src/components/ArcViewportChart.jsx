@@ -93,21 +93,22 @@ function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, subtitle, heig
           .attr('cy', yScale(0))
           .attr('r', r * scale)
 
-        svg
-          .append('line')
-          .attr('class', 'chord-line')
-          .attr('x1', xScale(startPt.x))
-          .attr('y1', yScale(startPt.y))
-          .attr('x2', xScale(endPt.x))
-          .attr('y2', yScale(endPt.y))
-
-        svg
-          .append('text')
-          .attr('x', xScale(endPt.x))
-          .attr('y', yScale(endPt.y) - 8)
-          .attr('class', 'chart-note')
-          .attr('text-anchor', 'end')
-          .text('arc & chord')
+        const endpointsGroup = svg.append('g').attr('class', 'arc-endpoints')
+        ;[startPt, endPt].forEach((pt, idx) => {
+          endpointsGroup
+            .append('circle')
+            .attr('class', 'endpoint-dot')
+            .attr('cx', xScale(pt.x))
+            .attr('cy', yScale(pt.y))
+            .attr('r', 5)
+          endpointsGroup
+            .append('text')
+            .attr('x', xScale(pt.x))
+            .attr('y', yScale(pt.y) - 10)
+            .attr('class', 'chart-note')
+            .attr('text-anchor', 'middle')
+            .text(idx === 0 ? 'start' : 'end')
+        })
       } else {
         svg
           .append('text')

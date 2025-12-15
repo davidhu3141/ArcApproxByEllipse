@@ -54,6 +54,7 @@ export function runEllipseSearch({
   offsetsStepsD2 = 10,
   tsSteps = 10,
   skipWorseThanBest = false,
+  constrainD1ForceZero = false,
   constrainD2ForceZero = false,
 }) {
   const r = Number(radius)
@@ -82,7 +83,7 @@ export function runEllipseSearch({
   }
 
   const ds = sampleOffsets(clampOffsetsD, true)
-  const d1s = sampleOffsets(clampOffsetsD1, true)
+  const d1s = constrainD1ForceZero ? [0] : sampleOffsets(clampOffsetsD1, true)
   const d2s = constrainD2ForceZero ? [0] : sampleOffsets(clampOffsetsD2, true)
 
   let attemptId = 0

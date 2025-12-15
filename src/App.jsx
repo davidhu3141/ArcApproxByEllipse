@@ -20,6 +20,7 @@ function App() {
   const [offsetStepsD2, setOffsetStepsD2] = useState('10')
   const [tsSteps, setTsSteps] = useState('10')
   const [skipWorse, setSkipWorse] = useState(true)
+  const [forceZeroD1, setForceZeroD1] = useState(false)
   const [forceZeroD2, setForceZeroD2] = useState(false)
   const [showAdvanced, setShowAdvanced] = useState(true)
   const [attempts, setAttempts] = useState([])
@@ -72,12 +73,13 @@ function App() {
       offsetsStepsD2: parseInt(offsetStepsD2, 10),
       tsSteps: parseInt(tsSteps, 10),
       skipWorseThanBest: skipWorse,
+      constrainD1ForceZero: forceZeroD1,
       constrainD2ForceZero: forceZeroD2,
     })
     setAttempts(a)
     setBestAttempt(best)
     setErrorSeries(es)
-  }, [radius, theta, tolerance, offsetStepsD, offsetStepsD1, offsetStepsD2, tsSteps, skipWorse, forceZeroD2])
+  }, [radius, theta, tolerance, offsetStepsD, offsetStepsD1, offsetStepsD2, tsSteps, skipWorse, forceZeroD1, forceZeroD2])
 
   useEffect(() => {
     runSearch()
@@ -177,7 +179,7 @@ function App() {
 
       <section className="charts-grid">
         <ArcViewportChart
-          title="Plane view with circle / chord / ellipse"
+          title="Plane view with circle / endpoints / ellipse"
           subtitle="D3 canvas #1"
           height={320}
           radius={radius}
@@ -250,7 +252,7 @@ function App() {
         {showAdvanced && (
           <>
             <p className="helper-text">
-              Control sampling steps for offsets (d, d1, d2) and arc sampling (ts). Optionally skip attempts whose a+b is already worse than the best pass.
+              Control sampling steps for offsets (d, d1, d2) and arc sampling (ts). Optionally skip attempts whose a+b is already worse than the best pass, or force d1/d2 to 0 to disable their sampling.
             </p>
             <div className="input-grid">
               <label className="field">
@@ -273,6 +275,7 @@ function App() {
                   value={offsetStepsD1}
                   onChange={(e) => setOffsetStepsD1(e.target.value)}
                   placeholder="2 - 50"
+                  disabled={forceZeroD1}
                 />
               </label>
               <label className="field">
@@ -305,6 +308,14 @@ function App() {
                   onChange={(e) => setSkipWorse(e.target.checked)}
                 />
                 <span>Skip when a+b already better than current attempt</span>
+              </label>
+              <label className="field checkbox-field">
+                <input
+                  type="checkbox"
+                  checked={forceZeroD1}
+                  onChange={(e) => setForceZeroD1(e.target.checked)}
+                />
+                <span>Force d1 = 0 (disable d1 sampling)</span>
               </label>
               <label className="field checkbox-field">
                 <input
