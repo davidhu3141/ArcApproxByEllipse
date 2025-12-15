@@ -7,19 +7,19 @@ import { runEllipseSearch } from './lib/search'
 import './App.css'
 
 function App() {
-  const [radius, setRadius] = useState('120')
-  const [theta, setTheta] = useState('45')
+  const [radius, setRadius] = useState('700')
+  const [theta, setTheta] = useState('20')
   const [chord, setChord] = useState(() => {
-    const r = 120
-    const t = 45
+    const r = 700
+    const t = 20
     return (2 * r * Math.sin(toRad(t / 2))).toFixed(4)
   })
-  const [tolerance, setTolerance] = useState('0.01')
+  const [tolerance, setTolerance] = useState('0.1')
   const [offsetStepsD, setOffsetStepsD] = useState('10')
   const [offsetStepsD1, setOffsetStepsD1] = useState('10')
   const [offsetStepsD2, setOffsetStepsD2] = useState('10')
   const [tsSteps, setTsSteps] = useState('10')
-  const [skipWorse, setSkipWorse] = useState(false)
+  const [skipWorse, setSkipWorse] = useState(true)
   const [forceZeroD2, setForceZeroD2] = useState(false)
   const [showAdvanced, setShowAdvanced] = useState(true)
   const [attempts, setAttempts] = useState([])
@@ -77,7 +77,7 @@ function App() {
     setAttempts(a)
     setBestAttempt(best)
     setErrorSeries(es)
-  }, [radius, theta, tolerance, offsetStepsD, offsetStepsD1, offsetStepsD2, tsSteps, skipWorse])
+  }, [radius, theta, tolerance, offsetStepsD, offsetStepsD1, offsetStepsD2, tsSteps, skipWorse, forceZeroD2])
 
   useEffect(() => {
     runSearch()
@@ -128,7 +128,7 @@ function App() {
               min="0"
               value={radius}
               onChange={(e) => handleRadiusChange(e.target.value)}
-              placeholder="e.g. 120"
+              placeholder="e.g. 700"
             />
           </label>
           <label className="field">
@@ -139,7 +139,7 @@ function App() {
               min="0"
               max="180"
               onChange={(e) => handleThetaChange(e.target.value)}
-              placeholder="e.g. 45"
+              placeholder="e.g. 20"
             />
           </label>
           <label className="field">
@@ -150,7 +150,7 @@ function App() {
               max={radius !== '' && Number.isFinite(parseFloat(radius)) ? 2 * parseFloat(radius) : undefined}
               value={chord}
               onChange={(e) => handleChordChange(e.target.value)}
-              placeholder="e.g. 150"
+              placeholder="e.g. 243"
             />
           </label>
           <label className="field">
@@ -161,7 +161,7 @@ function App() {
               step="0.01"
               value={tolerance}
               onChange={(e) => setTolerance(e.target.value)}
-              placeholder="e.g. 0.01"
+              placeholder="e.g. 0.1"
             />
           </label>
         </div>
