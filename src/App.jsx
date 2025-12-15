@@ -258,10 +258,10 @@ function App() {
                 <input
                   type="number"
                   min="2"
-                  max="20"
+                  max="50"
                   value={offsetStepsD}
                   onChange={(e) => setOffsetStepsD(e.target.value)}
-                  placeholder="2 - 20"
+                  placeholder="2 - 50"
                 />
               </label>
               <label className="field">
@@ -269,10 +269,10 @@ function App() {
                 <input
                   type="number"
                   min="2"
-                  max="20"
+                  max="50"
                   value={offsetStepsD1}
                   onChange={(e) => setOffsetStepsD1(e.target.value)}
-                  placeholder="2 - 20"
+                  placeholder="2 - 50"
                 />
               </label>
               <label className="field">
@@ -280,10 +280,10 @@ function App() {
                 <input
                   type="number"
                   min="2"
-                  max="20"
+                  max="50"
                   value={offsetStepsD2}
                   onChange={(e) => setOffsetStepsD2(e.target.value)}
-                  placeholder="2 - 20"
+                  placeholder="2 - 50"
                   disabled={forceZeroD2}
                 />
               </label>
