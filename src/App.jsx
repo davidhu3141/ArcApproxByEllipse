@@ -11,6 +11,11 @@ function App() {
   const [theta, setTheta] = useState('45')
   const [chord, setChord] = useState('150')
   const [tolerance, setTolerance] = useState('0.01')
+  const [offsetStepsD, setOffsetStepsD] = useState('10')
+  const [offsetStepsD1, setOffsetStepsD1] = useState('10')
+  const [offsetStepsD2, setOffsetStepsD2] = useState('10')
+  const [tsSteps, setTsSteps] = useState('10')
+  const [skipWorse, setSkipWorse] = useState(false)
   const [attempts, setAttempts] = useState([])
   const [bestAttempt, setBestAttempt] = useState(null)
   const [errorSeries, setErrorSeries] = useState([])
@@ -56,11 +61,16 @@ function App() {
       radius: parseFloat(radius),
       thetaDeg: parseFloat(theta),
       tolerance: parseFloat(tolerance),
+      offsetsStepsD: parseInt(offsetStepsD, 10),
+      offsetsStepsD1: parseInt(offsetStepsD1, 10),
+      offsetsStepsD2: parseInt(offsetStepsD2, 10),
+      tsSteps: parseInt(tsSteps, 10),
+      skipWorseThanBest: skipWorse,
     })
     setAttempts(a)
     setBestAttempt(best)
     setErrorSeries(es)
-  }, [radius, theta, tolerance])
+  }, [radius, theta, tolerance, offsetStepsD, offsetStepsD1, offsetStepsD2, tsSteps, skipWorse])
 
   useEffect(() => {
     runSearch()
@@ -181,6 +191,72 @@ function App() {
           attempts={attempts}
           best={bestAttempt}
         />
+      </section>
+
+      <section className="panel">
+        <div className="panel__head">
+          <div>
+            <p className="eyebrow">Advanced</p>
+            <h2>Search settings</h2>
+          </div>
+          <p className="helper-text">
+            Control sampling steps for offsets (d, d1, d2) and arc sampling (ts). Optionally skip attempts whose a+b is already worse than the best pass.
+          </p>
+        </div>
+        <div className="input-grid">
+          <label className="field">
+            <span>Offset steps for d</span>
+            <input
+              type="number"
+              min="2"
+              max="50"
+              value={offsetStepsD}
+              onChange={(e) => setOffsetStepsD(e.target.value)}
+              placeholder="2 - 20"
+            />
+          </label>
+          <label className="field">
+            <span>Offset steps for d1</span>
+            <input
+              type="number"
+              min="2"
+              max="50"
+              value={offsetStepsD1}
+              onChange={(e) => setOffsetStepsD1(e.target.value)}
+              placeholder="2 - 20"
+            />
+          </label>
+          <label className="field">
+            <span>Offset steps for d2</span>
+            <input
+              type="number"
+              min="2"
+              max="50"
+              value={offsetStepsD2}
+              onChange={(e) => setOffsetStepsD2(e.target.value)}
+              placeholder="2 - 20"
+            />
+          </label>
+          <label className="field">
+            <span>Arc sample steps (ts)</span>
+            <input
+              type="number"
+              min="4"
+              max="50"
+              value={tsSteps}
+              onChange={(e) => setTsSteps(e.target.value)}
+              placeholder="4 - 50"
+            />
+          </label>
+          <label className="field checkbox-field">
+            <input
+              type="checkbox"
+              checked={skipWorse}
+              onChange={(e) => setSkipWorse(e.target.checked)}
+            />
+            <span>Skip when a+b already better than current attempt</span>
+          </label>
+        </div>
       </section>
     </div>
   )

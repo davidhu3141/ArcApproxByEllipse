@@ -157,6 +157,17 @@ h3 {
   font-size: 15px;
 }
 
+.checkbox-field {
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+}
+
+.checkbox-field input[type='checkbox'] {
+  width: auto;
+  accent-color: var(--accent);
+}
+
 .field input:focus {
   outline: 1px solid var(--accent);
   box-shadow: 0 0 0 3px rgba(124, 243, 223, 0.18);
@@ -231,20 +242,20 @@ h3 {
   stroke: #7cf3df;
   stroke-width: 2.4;
   filter: drop-shadow(0 0 12px rgba(124, 243, 223, 0.45));
+  /* stroke-dasharray: 4 3; */
+}
+
+.chord-line {
+  stroke: #7cf3df;
+  stroke-width: 2.2;
+  stroke-dasharray: 4 3;
 }
 
 .ellipse-path {
   fill: none;
   stroke: #8fb5ff;
   stroke-width: 2;
-  stroke-dasharray: 4 3;
   opacity: 0.9;
-}
-
-.chord-line {
-  stroke: rgba(255, 214, 102, 0.9);
-  stroke-width: 2.2;
-  stroke-dasharray: 6 4;
 }
 
 .center-dot {

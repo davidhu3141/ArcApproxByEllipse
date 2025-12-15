@@ -45,7 +45,16 @@ function toCanonical({ A, B, C }) {
   }
 }
 
-export function runEllipseSearch({ radius, thetaDeg, tolerance }) {
+export function runEllipseSearch({
+  radius,
+  thetaDeg,
+  tolerance,
+  offsetsStepsD = 10,
+  offsetsStepsD1 = 10,
+  offsetsStepsD2 = 10,
+  tsSteps = 10,
+  skipWorseThanBest = false,
+}) {
   const r = Number(radius)
   const tDeg = Number(thetaDeg)
   const e = Number(tolerance)
@@ -59,17 +68,22 @@ export function runEllipseSearch({ radius, thetaDeg, tolerance }) {
   const quarter = thetaRad / 4
   const attemptsList = []
 
-  const sampleOffsets = () => {
-    const n = 10
+  const clampOffsetsD = Math.min(Math.max(Math.round(offsetsStepsD), 2), 20)
+  const clampOffsetsD1 = Math.min(Math.max(Math.round(offsetsStepsD1), 2), 20)
+  const clampOffsetsD2 = Math.min(Math.max(Math.round(offsetsStepsD2), 2), 20)
+  const clampTs = Math.min(Math.max(Math.round(tsSteps), 4), 50)
+
+  const sampleOffsets = (n) => {
     const step = (2 * e) / (n - 1)
     return Array.from({ length: n }, (_, i) => -e + i * step)
   }
 
-  const ds = sampleOffsets()
-  const d1s = sampleOffsets()
-  const d2s = sampleOffsets()
+  const ds = sampleOffsets(clampOffsetsD)
+  const d1s = sampleOffsets(clampOffsetsD1)
+  const d2s = sampleOffsets(clampOffsetsD2)
 
   let attemptId = 0
+  let bestAcceptedSum = Infinity
   for (const d of ds) {
     for (const d1 of d1s) {
       for (const d2 of d2s) {
@@ -88,6 +102,10 @@ export function runEllipseSearch({ radius, thetaDeg, tolerance }) {
           const canon = toCanonical(abc)
           if (canon.yDenomSign === '-') continue // hyperbola, skip
           const { a, b, h } = canon
+          const sumAB = a + b
+          if (skipWorseThanBest && bestAcceptedSum !== Infinity && sumAB >= bestAcceptedSum) {
+            continue
+          }
           const ratio = ((r + d2) * Math.cos(Math.PI / 2 - half)) / a
           if (Math.abs(ratio) > 1) continue
 
@@ -95,7 +113,7 @@ export function runEllipseSearch({ radius, thetaDeg, tolerance }) {
           const t1 = Math.PI - t0
           if (!(t0 < Math.PI / 2 && t1 > t0)) continue
 
-          const steps = 10
+          const steps = clampTs
           const ts = d3.range(steps).map((idx) => t0 + ((Math.PI / 2 - t0) * idx) / (steps - 1))
           const series = ts.map((tVal) => {
             const x = a * Math.cos(tVal)
@@ -113,6 +131,9 @@ export function runEllipseSearch({ radius, thetaDeg, tolerance }) {
             accepted: maxErr <= e,
             series,
           })
+          if (maxErr <= e) {
+            bestAcceptedSum = Math.min(bestAcceptedSum, sumAB)
+          }
           attemptId += 1
         } catch (err) {
           // skip invalid attempt
