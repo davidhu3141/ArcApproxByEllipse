@@ -163,7 +163,7 @@ function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, subtitle, heig
           .attr('class', 'chart-placeholder')
           .attr('x', width / 2)
           .attr('y', height / 2)
-          .text('輸入 R 與 θ 以繪製圓弧')
+          .text('Enter R and theta to draw the arc')
       }
 
       if (bestEllipse) {
@@ -223,15 +223,12 @@ function ErrorChart({ series, tolerance, title, subtitle, height = 260 }) {
         .attr('class', 'chart-placeholder')
         .attr('x', width / 2)
         .attr('y', height / 2)
-        .text('尚無可用資料')
+        .text('No data yet')
       return
     }
 
     const xExtent = d3.extent(series, (d) => d.tDeg)
-    const xDomain =
-      xExtent[0] === xExtent[1]
-        ? [xExtent[0] - 1, xExtent[1] + 1]
-        : xExtent
+    const xDomain = xExtent[0] === xExtent[1] ? [xExtent[0] - 1, xExtent[1] + 1] : xExtent
     const yMax = Math.max(tolerance, d3.max(series, (d) => d.err) || 0) * 1.1
     const xScale = d3.scaleLinear().domain(xDomain).range([padding, width - padding])
     const yScale = d3.scaleLinear().domain([0, yMax]).range([height - padding, padding])
@@ -304,20 +301,14 @@ function AttemptsChart({ attempts, best, title, subtitle, height = 260 }) {
         .attr('class', 'chart-placeholder')
         .attr('x', width / 2)
         .attr('y', height / 2)
-        .text('尚無可用資料')
+        .text('No data yet')
       return
     }
 
     const xExtent = d3.extent(attempts, (d) => d.a)
     const yExtent = d3.extent(attempts, (d) => d.b)
-    const xDomain =
-      xExtent[0] === xExtent[1]
-        ? [xExtent[0] - 1, xExtent[1] + 1]
-        : xExtent
-    const yDomain =
-      yExtent[0] === yExtent[1]
-        ? [yExtent[0] - 1, yExtent[1] + 1]
-        : yExtent
+    const xDomain = xExtent[0] === xExtent[1] ? [xExtent[0] - 1, xExtent[1] + 1] : xExtent
+    const yDomain = yExtent[0] === yExtent[1] ? [yExtent[0] - 1, yExtent[1] + 1] : yExtent
     const xScale = d3
       .scaleLinear()
       .domain([xDomain[0] || 0, xDomain[1] || 1])
@@ -349,11 +340,10 @@ function AttemptsChart({ attempts, best, title, subtitle, height = 260 }) {
       .enter()
       .append('circle')
       .attr('class', (d) =>
-        `attempt-dot ${d.accepted ? 'attempt-dot--pass' : 'attempt-dot--fail'} ${
-          best && best.id === d.id ? 'attempt-dot--best' : ''
+        `attempt-dot ${d.accepted ? 'attempt-dot--pass' : 'attempt-dot--fail'} ${best && best.id === d.id ? 'attempt-dot--best' : ''
         }`
       )
-      .attr('r', (d) => (best && best.id === d.id ? 6 : 4))
+      .attr('r', (d) => (best && best.id === d.id ? 6 : 2))
       .attr('cx', (d) => xScale(d.a))
       .attr('cy', (d) => yScale(d.b))
       .append('title')
@@ -431,51 +421,65 @@ function App() {
     const half = thetaRad / 2
     const quarter = thetaRad / 4
     const attemptsList = []
-    const samples = 100
-    for (let i = 0; i < samples; i += 1) {
-      const d = (Math.random() * 2 - 1) * e
-      const P = { x: 0, y: r - e }
-      const Q = {
-        x: (r + d) * Math.cos(Math.PI / 2 - quarter),
-        y: (r + d) * Math.sin(Math.PI / 2 - quarter),
-      }
-      const R = {
-        x: (r + e) * Math.cos(Math.PI / 2 - half),
-        y: (r + e) * Math.sin(Math.PI / 2 - half),
-      }
 
-      try {
-        const abc = solveABC({ y1: P.y, x2: Q.x, y2: Q.y, x3: R.x, y3: R.y })
-        const canon = toCanonical(abc)
-        if (canon.yDenomSign === '-') continue // hyperbola, skip
-        const { a, b, h } = canon
-        const ratio = ((r + e) * Math.cos(Math.PI / 2 - half)) / a
-        if (Math.abs(ratio) > 1) continue
+    const sampleOffsets = () => {
+      const n = 10
+      const step = (2 * e) / (n - 1)
+      return Array.from({ length: n }, (_, i) => -e + i * step)
+    }
+    const ds = sampleOffsets()
+    const d1s = sampleOffsets()
+    const d2s = sampleOffsets()
 
-        const t0 = Math.acos(ratio)
-        const t1 = Math.PI - t0
-        if (!(t0 < Math.PI / 2 && t1 > t0)) continue
+    let attemptId = 0
+    for (const d of ds) {
+      for (const d1 of d1s) {
+        for (const d2 of d2s) {
+          const P = { x: 0, y: r + d1 }
+          const Q = {
+            x: (r + d) * Math.cos(Math.PI / 2 - quarter),
+            y: (r + d) * Math.sin(Math.PI / 2 - quarter),
+          }
+          const R = {
+            x: (r + d2) * Math.cos(Math.PI / 2 - half),
+            y: (r + d2) * Math.sin(Math.PI / 2 - half),
+          }
 
-        const steps = 10
-        const ts = d3.range(steps).map((idx) => t0 + ((Math.PI / 2 - t0) * idx) / (steps - 1))
-        const series = ts.map((tVal) => {
-          const x = a * Math.cos(tVal)
-          const y = b * Math.sin(tVal) + h
-          const rTilde = Math.hypot(x, y)
-          return { tDeg: (tVal * 180) / Math.PI, err: Math.abs(rTilde - r) }
-        })
-        const maxErr = d3.max(series, (d) => d.err) || Infinity
-        attemptsList.push({
-          id: `att-${i}`,
-          a,
-          b,
-          h,
-          err: maxErr,
-          accepted: maxErr <= e,
-          series,
-        })
-      } catch (err) {
-        // skip invalid attempt
+          try {
+            const abc = solveABC({ y1: P.y, x2: Q.x, y2: Q.y, x3: R.x, y3: R.y })
+            const canon = toCanonical(abc)
+            if (canon.yDenomSign === '-') continue // hyperbola, skip
+            const { a, b, h } = canon
+            const ratio = ((r + d2) * Math.cos(Math.PI / 2 - half)) / a
+            if (Math.abs(ratio) > 1) continue
+
+            const t0 = Math.acos(ratio)
+            const t1 = Math.PI - t0
+            if (!(t0 < Math.PI / 2 && t1 > t0)) continue
+
+            const steps = 10
+            const ts = d3.range(steps).map((idx) => t0 + ((Math.PI / 2 - t0) * idx) / (steps - 1))
+            const series = ts.map((tVal) => {
+              const x = a * Math.cos(tVal)
+              const y = b * Math.sin(tVal) + h
+              const rTilde = Math.hypot(x, y)
+              return { tDeg: (tVal * 180) / Math.PI, err: Math.abs(rTilde - r) }
+            })
+            const maxErr = d3.max(series, (dVal) => dVal.err) || Infinity
+            attemptsList.push({
+              id: `att-${attemptId}`,
+              a,
+              b,
+              h,
+              err: maxErr,
+              accepted: maxErr <= e,
+              series,
+            })
+            attemptId += 1
+          } catch (err) {
+            // skip invalid attempt
+          }
+        }
       }
     }
 
@@ -497,24 +501,24 @@ function App() {
       <header className="hero">
         <div className="hero__text">
           <p className="eyebrow">ellipse search ui</p>
-          <h1>圓弧到橢圓的探索</h1>
+          <h1>Arc to Ellipse Exploration</h1>
           <p className="lede">
-            先提供輸入、視覺化框架與 D3 畫布，並接上 req2 的隨機搜尋邏輯。視窗與區塊皆為 RWD，方便快速疊代。
+            Inputs, visualization frame, and D3 canvases wired to req2/req3 sampling. Layout is responsive for quick iteration.
           </p>
           <div className="hero__meta">
             <span className="pill">React + Vite</span>
             <span className="pill">D3 ready</span>
-            <span className="pill">θ ↔ 弦長同步</span>
+            <span className="pill">theta ↔ chord sync</span>
           </div>
         </div>
         <div className="hero__notes">
           <div className="note-card">
-            <p className="note-title">目標</p>
-            <p className="note-body">圓弧範圍 90−θ/2 ~ 90+θ/2，半徑、弦長、容許誤差，找出近似橢圓。</p>
+            <p className="note-title">Goal</p>
+            <p className="note-body">Arc span 90−theta/2 ~ 90+theta/2 with radius, chord, tolerance; find a close ellipse.</p>
           </div>
           <div className="note-card">
-            <p className="note-title">Viewport 提示</p>
-            <p className="note-body">圓弧 w×h，viewport 至少上推 h/2、下推 h、左右 w/3。</p>
+            <p className="note-title">Viewport hint</p>
+            <p className="note-body">Arc size w x h; viewport at least h/2 up, h down, w/3 left/right.</p>
           </div>
         </div>
       </header>
@@ -522,87 +526,87 @@ function App() {
       <section className="panel">
         <div className="panel__head">
           <div>
-            <p className="eyebrow">輸入參數</p>
-            <h2>基本設定</h2>
+            <p className="eyebrow">Inputs</p>
+            <h2>Basic settings</h2>
           </div>
           <p className="helper-text">
-            θ 與弦長互相影響，輸入任一欄位會同步另一欄，半徑變更也會重算弦長。θ 定義為圓弧範圍 90−θ/2 ~ 90+θ/2。
+            theta and chord sync each other; radius changes recompute chord. theta is the total span (90−theta/2 ~ 90+theta/2).
           </p>
         </div>
         <div className="input-grid">
           <label className="field">
-            <span>半徑 (R)</span>
+            <span>Radius (R)</span>
             <input
               type="number"
               min="0"
               value={radius}
               onChange={(e) => handleRadiusChange(e.target.value)}
-              placeholder="例如 120"
+              placeholder="e.g. 120"
             />
           </label>
           <label className="field">
-            <span>角度 θ (deg)</span>
+            <span>Theta (deg)</span>
             <input
               type="number"
               value={theta}
               min="0"
               max="180"
               onChange={(e) => handleThetaChange(e.target.value)}
-              placeholder="例如 45"
+              placeholder="e.g. 45"
             />
           </label>
           <label className="field">
-            <span>弦長</span>
+            <span>Chord length</span>
             <input
               type="number"
               min="0"
               max={radius !== '' && Number.isFinite(parseFloat(radius)) ? 2 * parseFloat(radius) : undefined}
               value={chord}
               onChange={(e) => handleChordChange(e.target.value)}
-              placeholder="例如 150"
+              placeholder="e.g. 150"
             />
           </label>
           <label className="field">
-            <span>容許誤差 e</span>
+            <span>Tolerance e</span>
             <input
               type="number"
               min="0"
               step="0.0001"
               value={tolerance}
               onChange={(e) => setTolerance(e.target.value)}
-              placeholder="例如 0.01"
+              placeholder="e.g. 0.01"
             />
           </label>
         </div>
         <div className="panel__foot">
           <p>
-            每次輸入變更會重新嘗試 100 次隨機 d (-e,e)，保留 err &lt;= e 且 a+b 最小的橢圓，並將其誤差曲線與橢圓描在圖中。
+            Each change tries 10×10×10 random (d,d1,d2) in (-e,e); keeps err &lt;= e with minimal a+b, and plots its error curve and ellipse.
           </p>
           <button type="button" className="primary-btn" onClick={runSearch}>
-            重新搜尋
+            Re-run search
           </button>
         </div>
       </section>
 
       <section className="charts-grid">
         <ArcViewportChart
-          title="平面座標與圓弧 viewport"
-          subtitle="D3 畫布 #1"
+          title="Plane view with circle / chord / ellipse"
+          subtitle="D3 canvas #1"
           height={320}
           radius={radius}
           thetaDeg={theta}
           bestEllipse={bestAttempt}
         />
         <ErrorChart
-          title="各角度誤差圖"
-          subtitle="D3 畫布 #2"
+          title="Angle vs error"
+          subtitle="D3 canvas #2"
           height={260}
           series={errorSeries}
           tolerance={parseFloat(tolerance) || 0}
         />
         <AttemptsChart
-          title="嘗試過的橢圓半長短軸"
-          subtitle="D3 畫布 #3"
+          title="Tried ellipse semi-axes"
+          subtitle="D3 canvas #3"
           height={260}
           attempts={attempts}
           best={bestAttempt}
