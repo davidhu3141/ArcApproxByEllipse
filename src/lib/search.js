@@ -95,7 +95,7 @@ export function runEllipseSearch({ radius, thetaDeg, tolerance }) {
           const t1 = Math.PI - t0
           if (!(t0 < Math.PI / 2 && t1 > t0)) continue
 
-          const steps = 10
+          const steps = 30
           const ts = d3.range(steps).map((idx) => t0 + ((Math.PI / 2 - t0) * idx) / (steps - 1))
           const series = ts.map((tVal) => {
             const x = a * Math.cos(tVal)

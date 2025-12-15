@@ -141,7 +141,7 @@ function App() {
             <input
               type="number"
               min="0"
-              step="0.0001"
+              step="0.01"
               value={tolerance}
               onChange={(e) => setTolerance(e.target.value)}
               placeholder="e.g. 0.01"

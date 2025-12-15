@@ -32,8 +32,25 @@ function AttemptsChart({ attempts, best, title, subtitle, height = 260 }) {
       return
     }
 
-    const xExtent = d3.extent(attempts, (d) => d.a)
-    const yExtent = d3.extent(attempts, (d) => d.b)
+    const meanA = d3.mean(attempts, (d) => d.a) || 0
+    const meanB = d3.mean(attempts, (d) => d.b) || 0
+    const stdA = d3.deviation(attempts, (d) => d.a) || 0
+    const stdB = d3.deviation(attempts, (d) => d.b) || 0
+    let plotAttempts = attempts
+    if (stdA > 0 && stdB > 0) {
+      const minA = meanA - 3 * stdA
+      const maxA = meanA + 3 * stdA
+      const minB = meanB - 3 * stdB
+      const maxB = meanB + 3 * stdB
+      plotAttempts = attempts.filter(
+        (d) =>
+          (d.a >= minA && d.a <= maxA && d.b >= minB && d.b <= maxB) ||
+          (best && d.id === best.id)
+      )
+    }
+
+    const xExtent = d3.extent(plotAttempts, (d) => d.a)
+    const yExtent = d3.extent(plotAttempts, (d) => d.b)
     const xDomain = xExtent[0] === xExtent[1] ? [xExtent[0] - 1, xExtent[1] + 1] : xExtent
     const yDomain = yExtent[0] === yExtent[1] ? [yExtent[0] - 1, yExtent[1] + 1] : yExtent
     const xScale = d3
@@ -61,8 +78,8 @@ function AttemptsChart({ attempts, best, title, subtitle, height = 260 }) {
       .call((g) => g.selectAll('text').attr('class', 'axis-tick'))
       .call((g) => g.selectAll('path,line').attr('class', 'axis-line'))
 
-    const fails = attempts.filter((d) => !d.accepted)
-    const passes = attempts.filter((d) => d.accepted)
+    const fails = plotAttempts.filter((d) => !d.accepted)
+    const passes = plotAttempts.filter((d) => d.accepted)
 
     svg
       .selectAll('circle.attempt-dot.fail')
