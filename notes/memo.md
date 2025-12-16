@@ -6,3 +6,14 @@ memo
 - [ ] 應該要有分支策略
 
 todo: scaleX and bottomaxis fix
+
+
+publish:
+- goto release branch
+    - change ver
+    - npm run build
+    - push
+- goto gh-pages branch
+    - del top files
+    - move dist to top
+    - push
