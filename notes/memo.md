@@ -17,3 +17,5 @@ publish:
     - del top files
     - move dist to top
     - push
+
+- [x] todo: 在 vite.config.js 加上 base: '/ArcApproxByEllipse/'
