@@ -1,5 +1,6 @@
 
-(This is for openai codex, but not a formal format.)
+> (This is for openai codex, but not a formal document.)
+
 
 ultimate goal 1
 ---------------
@@ -91,11 +92,13 @@ ds d1s d2s 的 number of steps 範圍是 2~50, ts 的 number of steps 範圍是 
 還要一個 checkbox 用來決定是不是 "如果發現 a+b 已經比現有的 pass 的最小 a+b 還大就要跳過"
 
 
+
 req6
 ----
 
 advanced setting 要可以收合。
 advanced setting 新增一個 checkbox 用來固定 endpoints。勾選時 d2 只能是 0.
+
 
 
 req7
