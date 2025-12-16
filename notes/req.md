@@ -1,5 +1,5 @@
 
-> (This is for openai codex, but not a formal document.)
+> (This is for openai codex, not a formal document.)
 
 
 ultimate goal 1

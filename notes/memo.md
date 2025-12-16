@@ -23,3 +23,5 @@ publish:
 
 - [x] todo: 在 vite.config.js 加上 base: '/ArcApproxByEllipse/'
 - [ ] create github release
+
+change title and icon
