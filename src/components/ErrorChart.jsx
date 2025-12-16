@@ -39,7 +39,7 @@ function ErrorChart({ series, tolerance, title, layoutToggle, height = 260 }) {
     const xDomain = xExtent[0] === xExtent[1] ? [xExtent[0] - 1, xExtent[1] + 1] : xExtent
     const yMin = Math.min(0, d3.min(series, (d) => d.err) || 0) * 1.1
     const yMax = Math.max(tolerance, d3.max(series, (d) => d.err) || 0) * 1.1
-    const xScale = d3.scaleLinear().domain(xDomain).range([padding, width - padding])
+    const xScale = d3.scaleLinear().domain(xDomain).range([width - padding, padding])
     const yScale = d3.scaleLinear().domain([yMin, yMax]).range([height - padding, padding])
 
     svg
