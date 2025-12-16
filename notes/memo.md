@@ -10,6 +10,7 @@ todo: scaleX and bottomaxis fix
 
 publish:
 - goto release branch
+    - merge main
     - change ver
     - commit: publish
     - npm run build
@@ -18,6 +19,7 @@ publish:
     - del top files, but gitignore, dist, node_modules
     - move dist to top
     - commit and push
+    - checkout main
 
 - [x] todo: 在 vite.config.js 加上 base: '/ArcApproxByEllipse/'
 - [ ] create github release
