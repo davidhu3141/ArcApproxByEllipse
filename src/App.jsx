@@ -21,10 +21,10 @@ function App() {
   const [offsetStepsD, setOffsetStepsD] = useState('10')
   const [offsetStepsD1, setOffsetStepsD1] = useState('10')
   const [offsetStepsD2, setOffsetStepsD2] = useState('10')
-  const [tsSteps, setTsSteps] = useState('10')
+  const [tsSteps, setTsSteps] = useState('20')
   const [skipWorse, setSkipWorse] = useState(true)
-  const [forceZeroD1, setForceZeroD1] = useState(false)
-  const [forceZeroD2, setForceZeroD2] = useState(false)
+  const [forceZeroD1, setForceZeroD1] = useState(true)
+  const [forceZeroD2, setForceZeroD2] = useState(true)
   const [showAttemptsChart, setShowAttemptsChart] = useState(isDevMode)
   const [showAdvanced, setShowAdvanced] = useState(isDevMode)
   const [attempts, setAttempts] = useState([])
@@ -279,10 +279,10 @@ function App() {
                 <input
                   type="number"
                   min="4"
-                  max="50"
+                  max={maxStepNumber}
                   value={tsSteps}
                   onChange={(e) => setTsSteps(e.target.value)}
-                  placeholder="4 - 50"
+                  placeholder={`4 - ${maxStepNumber}`}
                 />
               </label>
               <label className="field checkbox-field">

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 
-function ErrorChart({ series, tolerance, title, subtitle, layoutToggle, height = 260 }) {
+function ErrorChart({ series, tolerance, title, layoutToggle, height = 260 }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -84,7 +84,6 @@ function ErrorChart({ series, tolerance, title, subtitle, layoutToggle, height =
   return (
     <div className="chart-card">
       <div className="chart-card__head">
-        <p className="eyebrow">{subtitle}</p>
         <h3>{title}</h3>
       </div>
       <div className="chart-card__body" ref={ref} />
