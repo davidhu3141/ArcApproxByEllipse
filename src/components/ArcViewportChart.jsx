@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 import { toRad } from '../lib/utils'
 
-function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, subtitle, height = 320 }) {
+function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, layoutToggle, height = 320 }) {
   const containerRef = useRef(null)
 
   useEffect(() => {
@@ -94,21 +94,21 @@ function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, subtitle, heig
           .attr('r', r * scale)
 
         const endpointsGroup = svg.append('g').attr('class', 'arc-endpoints')
-        ;[startPt, endPt].forEach((pt, idx) => {
-          endpointsGroup
-            .append('circle')
-            .attr('class', 'endpoint-dot')
-            .attr('cx', xScale(pt.x))
-            .attr('cy', yScale(pt.y))
-            .attr('r', 5)
-          endpointsGroup
-            .append('text')
-            .attr('x', xScale(pt.x))
-            .attr('y', yScale(pt.y) - 10)
-            .attr('class', 'chart-note')
-            .attr('text-anchor', 'middle')
-            .text(idx === 0 ? 'start' : 'end')
-        })
+          ;[startPt, endPt].forEach((pt, idx) => {
+            endpointsGroup
+              .append('circle')
+              .attr('class', 'endpoint-dot')
+              .attr('cx', xScale(pt.x))
+              .attr('cy', yScale(pt.y))
+              .attr('r', 5)
+            endpointsGroup
+              .append('text')
+              .attr('x', xScale(pt.x))
+              .attr('y', yScale(pt.y) - 10)
+              .attr('class', 'chart-note')
+              .attr('text-anchor', 'middle')
+              .text(idx === 0 ? 'start' : 'end')
+          })
       } else {
         svg
           .append('text')
@@ -136,12 +136,11 @@ function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, subtitle, heig
     const handleResize = () => draw()
     window.addEventListener('resize', handleResize)
     return () => window.removeEventListener('resize', handleResize)
-  }, [radius, thetaDeg, height, bestEllipse])
+  }, [radius, thetaDeg, height, bestEllipse, layoutToggle])
 
   return (
     <div className="chart-card">
       <div className="chart-card__head">
-        <p className="eyebrow">{subtitle}</p>
         <h3>{title}</h3>
       </div>
       <div className="chart-card__body" ref={containerRef} />

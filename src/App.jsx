@@ -6,6 +6,9 @@ import { formatNum, toRad } from './lib/utils'
 import { runEllipseSearch } from './lib/search'
 import './App.css'
 
+const isDevMode = false;
+const maxStepNumber = isDevMode ? 50 : 30;
+
 function App() {
   const [radius, setRadius] = useState('700')
   const [theta, setTheta] = useState('20')
@@ -22,7 +25,8 @@ function App() {
   const [skipWorse, setSkipWorse] = useState(true)
   const [forceZeroD1, setForceZeroD1] = useState(false)
   const [forceZeroD2, setForceZeroD2] = useState(false)
-  const [showAdvanced, setShowAdvanced] = useState(true)
+  const [showAttemptsChart, setShowAttemptsChart] = useState(isDevMode)
+  const [showAdvanced, setShowAdvanced] = useState(isDevMode)
   const [attempts, setAttempts] = useState([])
   const [bestAttempt, setBestAttempt] = useState(null)
   const [errorSeries, setErrorSeries] = useState([])
@@ -75,6 +79,7 @@ function App() {
       skipWorseThanBest: skipWorse,
       constrainD1ForceZero: forceZeroD1,
       constrainD2ForceZero: forceZeroD2,
+      maxStepNumber,
     })
     setAttempts(a)
     setBestAttempt(best)
@@ -89,33 +94,16 @@ function App() {
     <div className="page">
       <header className="hero">
         <div className="hero__text">
-          <p className="eyebrow">ellipse search ui</p>
           <h1>Arc to Ellipse Exploration</h1>
           <p className="lede">
             Inputs, visualization frame, and D3 canvases wired to req2/req3 sampling. Layout is responsive for quick iteration.
           </p>
-          <div className="hero__meta">
-            <span className="pill">React + Vite</span>
-            <span className="pill">D3 ready</span>
-            <span className="pill">theta ↔ chord sync</span>
-          </div>
-        </div>
-        <div className="hero__notes">
-          <div className="note-card">
-            <p className="note-title">Goal</p>
-            <p className="note-body">Arc span 90−theta/2 ~ 90+theta/2 with radius, chord, tolerance; find a close ellipse.</p>
-          </div>
-          <div className="note-card">
-            <p className="note-title">Viewport hint</p>
-            <p className="note-body">Arc size w x h; viewport at least h/2 up, h down, w/3 left/right.</p>
-          </div>
         </div>
       </header>
 
       <section className="panel">
         <div className="panel__head">
           <div>
-            <p className="eyebrow">Inputs</p>
             <h2>Basic settings</h2>
           </div>
           <p className="helper-text">
@@ -171,41 +159,38 @@ function App() {
           <p>
             Each change tries 10×10×10 random (d,d1,d2) in (-e,e); keeps err &lt;= e with minimal a+b, and plots its error curve and ellipse.
           </p>
-          <button type="button" className="primary-btn" onClick={runSearch}>
-            Re-run search
-          </button>
         </div>
       </section>
 
       <section className="charts-grid">
         <ArcViewportChart
           title="Plane view with circle / endpoints / ellipse"
-          subtitle="D3 canvas #1"
           height={320}
           radius={radius}
           thetaDeg={theta}
           bestEllipse={bestAttempt}
+          layoutToggle={showAttemptsChart}
         />
         <ErrorChart
           title="Angle vs error"
-          subtitle="D3 canvas #2"
           height={260}
           series={errorSeries}
           tolerance={parseFloat(tolerance) || 0}
+          layoutToggle={showAttemptsChart}
         />
-        <AttemptsChart
-          title="Tried ellipse semi-axes"
-          subtitle="D3 canvas #3"
-          height={260}
-          attempts={attempts}
-          best={bestAttempt}
-        />
+        {showAttemptsChart && (
+          <AttemptsChart
+            title="Tried ellipse semi-axes"
+            height={260}
+            attempts={attempts}
+            best={bestAttempt}
+          />
+        )}
       </section>
 
       <section className="panel">
         <div className="panel__head">
           <div>
-            <p className="eyebrow">Best Result</p>
             <h2>Current best ellipse</h2>
           </div>
         </div>
@@ -240,7 +225,6 @@ function App() {
       <section className="panel">
         <div className="panel__head">
           <div>
-            <p className="eyebrow">Advanced</p>
             <h2>Search settings</h2>
           </div>
           <div className="panel__actions">
@@ -252,7 +236,7 @@ function App() {
         {showAdvanced && (
           <>
             <p className="helper-text">
-              Control sampling steps for offsets (d, d1, d2) and arc sampling (ts). Optionally skip attempts whose a+b is already worse than the best pass, or force d1/d2 to 0 to disable their sampling.
+              Control sampling steps for offsets (d, d1, d2) and arc sampling (ts). Optionally skip attempts whose a+b is already worse than the best pass, force d1/d2 to 0, or show the attempts scatter plot.
             </p>
             <div className="input-grid">
               <label className="field">
@@ -260,10 +244,10 @@ function App() {
                 <input
                   type="number"
                   min="2"
-                  max="50"
+                  max={maxStepNumber}
                   value={offsetStepsD}
                   onChange={(e) => setOffsetStepsD(e.target.value)}
-                  placeholder="2 - 50"
+                  placeholder={`2 - ${maxStepNumber}`}
                 />
               </label>
               <label className="field">
@@ -271,10 +255,10 @@ function App() {
                 <input
                   type="number"
                   min="2"
-                  max="50"
+                  max={maxStepNumber}
                   value={offsetStepsD1}
                   onChange={(e) => setOffsetStepsD1(e.target.value)}
-                  placeholder="2 - 50"
+                  placeholder={`2 - ${maxStepNumber}`}
                   disabled={forceZeroD1}
                 />
               </label>
@@ -283,10 +267,10 @@ function App() {
                 <input
                   type="number"
                   min="2"
-                  max="50"
+                  max={maxStepNumber}
                   value={offsetStepsD2}
                   onChange={(e) => setOffsetStepsD2(e.target.value)}
-                  placeholder="2 - 50"
+                  placeholder={`2 - ${maxStepNumber}`}
                   disabled={forceZeroD2}
                 />
               </label>
@@ -308,6 +292,14 @@ function App() {
                   onChange={(e) => setSkipWorse(e.target.checked)}
                 />
                 <span>Skip when a+b already better than current attempt</span>
+              </label>
+              <label className="field checkbox-field">
+                <input
+                  type="checkbox"
+                  checked={showAttemptsChart}
+                  onChange={(e) => setShowAttemptsChart(e.target.checked)}
+                />
+                <span>Show "Tried ellipse semi-axes" chart</span>
               </label>
               <label className="field checkbox-field">
                 <input

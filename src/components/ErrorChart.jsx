@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
 
-function ErrorChart({ series, tolerance, title, subtitle, height = 260 }) {
+function ErrorChart({ series, tolerance, title, subtitle, layoutToggle, height = 260 }) {
   const ref = useRef(null)
 
   useEffect(() => {
@@ -79,7 +79,7 @@ function ErrorChart({ series, tolerance, title, subtitle, height = 260 }) {
       .curve(d3.curveMonotoneX)
 
     svg.append('path').attr('class', 'error-line').attr('d', line(series))
-  }, [series, tolerance, height])
+  }, [series, tolerance, height, layoutToggle])
 
   return (
     <div className="chart-card">

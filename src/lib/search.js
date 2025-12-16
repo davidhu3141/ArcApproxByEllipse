@@ -56,6 +56,7 @@ export function runEllipseSearch({
   skipWorseThanBest = false,
   constrainD1ForceZero = false,
   constrainD2ForceZero = false,
+  maxStepNumber = 30,
 }) {
   const r = Number(radius)
   const tDeg = Number(thetaDeg)
@@ -70,9 +71,9 @@ export function runEllipseSearch({
   const quarter = thetaRad / 4
   const attemptsList = []
 
-  const clampOffsetsD = Math.min(Math.max(Math.round(offsetsStepsD), 2), 20)
-  const clampOffsetsD1 = Math.min(Math.max(Math.round(offsetsStepsD1), 2), 20)
-  const clampOffsetsD2 = Math.min(Math.max(Math.round(offsetsStepsD2), 2), 20)
+  const clampOffsetsD = Math.min(Math.max(Math.round(offsetsStepsD), 2), maxStepNumber)
+  const clampOffsetsD1 = Math.min(Math.max(Math.round(offsetsStepsD1), 2), maxStepNumber)
+  const clampOffsetsD2 = Math.min(Math.max(Math.round(offsetsStepsD2), 2), maxStepNumber)
   const clampTs = Math.min(Math.max(Math.round(tsSteps), 4), 50)
 
   const sampleOffsets = (n, allowNegative = true) => {
