@@ -50,7 +50,7 @@ Results
 If we allow an error tolerance of $0.5$ cm, the program reports the following:
 
 - The arc can be approximated with an ellipse whose semi-major axis is `a = 185.4 cm` and semi-minor axis is `b = 43.0 cm`.
-- The trammel would sweep a triangular area of roughly `base x height = 250 cm (the chord) x 185.4 cm (a)`.
+- The trammel would sweep a triangular area of dimensions roughly `base x height = 250 cm (the chord) x 185.4 cm (a)`.
     - A traditional compass would require `base x height = 250 cm (the chord) x 700 cm (the radius)`.
 
 <!-- pic -->
@@ -64,4 +64,4 @@ These results assume zero error at the midpoint and endpoints of the arc, so the
 Other Thoughts
 --------------
 
-This program is not designed for the type of ellipse trammel where the pen sits between two nails. That version would occupy more space than the other type and is typically meant for ellipses whose two axes are closer in length. Honestly, I was just too lazy to support it.
+This program is not designed for the type of ellipse trammel where the pen sits between two nails. That version would occupy more space than the other type and is typically meant for ellipses whose two axes are closer in length (my guess). Honestly, I was just too lazy to support it.
