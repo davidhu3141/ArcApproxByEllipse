@@ -99,7 +99,7 @@ function App() {
             Inputs, visualization frame, and D3 canvases wired to req2/req3 sampling. Layout is responsive for quick iteration.
           </p>
           <div className="hero__meta">
-            <span className="pill">v0.0.1</span>
+            <span className="pill">v0.0.1.1216.1</span>
             <span className="pill">Under development</span>
           </div>
         </div>
