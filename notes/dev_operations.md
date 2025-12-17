@@ -1,5 +1,13 @@
 
 
+Branch Policy
+-------------
+
+will become:
+
+- develop = feature
+- main = release
+- gh-pages
 
 
 Release operations (manual)

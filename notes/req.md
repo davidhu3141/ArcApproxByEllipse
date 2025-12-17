@@ -7,7 +7,7 @@ ultimate goal 1
 
 建立一個網頁，讓使用者輸入圓弧的半徑與角度 theta（或半徑與弦長），以及容許誤差，找出能夠近似該圓弧的橢圓
 
-圓弧是圓心在原點的圓，角度是 90-theta/2 ~ 90+theta/2 (deg)
+圓弧是圓心在原點的圓，角度是 `90-theta/2 ~ 90+theta/2` (deg)
 
 
 
@@ -87,7 +87,7 @@ req5
 ----
 
 加入一個進階設定的 section，用來設定 ds d1s d2s ts 這四項的 number of steps.
-ds d1s d2s 的 number of steps 範圍是 2~50, ts 的 number of steps 範圍是 4~50
+ds d1s d2s 的 number of steps 範圍是 `2~50`, ts 的 number of steps 範圍是 `4~50`
 
 還要一個 checkbox 用來決定是不是 "如果發現 a+b 已經比現有的 pass 的最小 a+b 還大就要跳過"
 
