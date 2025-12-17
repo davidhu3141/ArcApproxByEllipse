@@ -7,13 +7,11 @@ memo
 
 todo: scaleX and bottomaxis fix
 
-
-
-
-
 - [x] todo: 在 vite.config.js 加上 base: '/ArcApproxByEllipse/'
 - [ ] create github release
 
 change title and icon
 curve legend
 ui lang/locale
+
+todo: code review script and refine
