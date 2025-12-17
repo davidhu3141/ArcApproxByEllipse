@@ -25,3 +25,5 @@ publish:
 - [ ] create github release
 
 change title and icon
+curve legend
+ui lang/locale
