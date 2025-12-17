@@ -6,7 +6,7 @@ import { formatNum, toRad } from './lib/utils'
 import { runEllipseSearch } from './lib/search'
 import './App.css'
 
-const versionCode = "v0.0.1.1216.3";
+const versionCode = "v0.0.1.1217.1";
 
 const isDevMode = false;
 const maxStepNumber = isDevMode ? 50 : 30;
