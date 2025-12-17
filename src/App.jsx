@@ -6,6 +6,8 @@ import { formatNum, toRad } from './lib/utils'
 import { runEllipseSearch } from './lib/search'
 import './App.css'
 
+const versionCode = "v0.0.1.1216.3";
+
 const isDevMode = false;
 const maxStepNumber = isDevMode ? 50 : 30;
 
@@ -99,7 +101,7 @@ function App() {
             Inputs, visualization frame, and D3 canvases wired to req2/req3 sampling. Layout is responsive for quick iteration.
           </p>
           <div className="hero__meta">
-            <span className="pill">v0.0.1.1216.1</span>
+            <span className="pill">{versionCode}</span>
             <span className="pill">Under development</span>
           </div>
         </div>
