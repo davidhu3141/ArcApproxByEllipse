@@ -15,3 +15,6 @@ curve legend
 ui lang/locale
 
 todo: code review script and refine
+
+default toler = 0.4
+default d steps = 20
