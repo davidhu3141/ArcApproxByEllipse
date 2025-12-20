@@ -9,6 +9,13 @@ will become:
 - main = release
 - gh-pages
 
+commit types:
+
+- feat (develop)
+- doc (develop)
+- publish (main)
+- "Update site" (gh-pages)
+
 
 Release operations (manual)
 ---------------------------
