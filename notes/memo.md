@@ -17,4 +17,6 @@ ui lang/locale
 todo: code review script and refine
 
 default toler = 0.4
-default d steps = 20
+default d steps = 25
+
+Q vs P

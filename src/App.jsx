@@ -178,7 +178,7 @@ function App() {
           layoutToggle={showAttemptsChart}
         />
         <ErrorChart
-          title="Angle vs error"
+          title="Error vs angle"
           height={260}
           series={errorSeries}
           tolerance={parseFloat(tolerance) || 0}
