@@ -19,8 +19,8 @@ function App() {
     const t = 20
     return (2 * r * Math.sin(toRad(t / 2))).toFixed(4)
   })
-  const [tolerance, setTolerance] = useState('0.1')
-  const [offsetStepsD, setOffsetStepsD] = useState('10')
+  const [tolerance, setTolerance] = useState('0.4')
+  const [offsetStepsD, setOffsetStepsD] = useState('25')
   const [offsetStepsD1, setOffsetStepsD1] = useState('10')
   const [offsetStepsD2, setOffsetStepsD2] = useState('10')
   const [tsSteps, setTsSteps] = useState('20')
@@ -107,6 +107,32 @@ function App() {
         </div>
       </header>
 
+      <section className="charts-grid">
+        <ArcViewportChart
+          title="Plane view with circle / endpoints / ellipse"
+          height={320}
+          radius={radius}
+          thetaDeg={theta}
+          bestEllipse={bestAttempt}
+          layoutToggle={showAttemptsChart}
+        />
+        <ErrorChart
+          title="Error vs angle"
+          height={260}
+          series={errorSeries}
+          tolerance={parseFloat(tolerance) || 0}
+          layoutToggle={showAttemptsChart}
+        />
+        {showAttemptsChart && (
+          <AttemptsChart
+            title="Tried ellipse semi-axes"
+            height={260}
+            attempts={attempts}
+            best={bestAttempt}
+          />
+        )}
+      </section>
+
       <section className="panel">
         <div className="panel__head">
           <div>
@@ -168,32 +194,6 @@ function App() {
         </div>
       </section>
 
-      <section className="charts-grid">
-        <ArcViewportChart
-          title="Plane view with circle / endpoints / ellipse"
-          height={320}
-          radius={radius}
-          thetaDeg={theta}
-          bestEllipse={bestAttempt}
-          layoutToggle={showAttemptsChart}
-        />
-        <ErrorChart
-          title="Error vs angle"
-          height={260}
-          series={errorSeries}
-          tolerance={parseFloat(tolerance) || 0}
-          layoutToggle={showAttemptsChart}
-        />
-        {showAttemptsChart && (
-          <AttemptsChart
-            title="Tried ellipse semi-axes"
-            height={260}
-            attempts={attempts}
-            best={bestAttempt}
-          />
-        )}
-      </section>
-
       <section className="panel">
         <div className="panel__head">
           <div>
@@ -246,18 +246,7 @@ function App() {
             </p>
             <div className="input-grid">
               <label className="field">
-                <span>Offset steps for d</span>
-                <input
-                  type="number"
-                  min="2"
-                  max={maxStepNumber}
-                  value={offsetStepsD}
-                  onChange={(e) => setOffsetStepsD(e.target.value)}
-                  placeholder={`2 - ${maxStepNumber}`}
-                />
-              </label>
-              <label className="field">
-                <span>Offset steps for d1</span>
+                <span>Offset steps for P</span>
                 <input
                   type="number"
                   min="2"
@@ -269,7 +258,18 @@ function App() {
                 />
               </label>
               <label className="field">
-                <span>Offset steps for d2</span>
+                <span>Offset steps for Q</span>
+                <input
+                  type="number"
+                  min="2"
+                  max={maxStepNumber}
+                  value={offsetStepsD}
+                  onChange={(e) => setOffsetStepsD(e.target.value)}
+                  placeholder={`2 - ${maxStepNumber}`}
+                />
+              </label>
+              <label className="field">
+                <span>Offset steps for R</span>
                 <input
                   type="number"
                   min="2"
@@ -297,7 +297,7 @@ function App() {
                   checked={skipWorse}
                   onChange={(e) => setSkipWorse(e.target.checked)}
                 />
-                <span>Skip when a+b already better than current attempt</span>
+                <span>Skip when 'a' is already better than current attempt</span>
               </label>
               <label className="field checkbox-field">
                 <input
@@ -313,7 +313,7 @@ function App() {
                   checked={forceZeroD1}
                   onChange={(e) => setForceZeroD1(e.target.checked)}
                 />
-                <span>Force d1 = 0 (disable d1 sampling)</span>
+                <span>Disable P sampling</span>
               </label>
               <label className="field checkbox-field">
                 <input
@@ -321,7 +321,7 @@ function App() {
                   checked={forceZeroD2}
                   onChange={(e) => setForceZeroD2(e.target.checked)}
                 />
-                <span>Force d2 = 0 (disable d2 sampling)</span>
+                <span>Disable R sampling</span>
               </label>
             </div>
           </>
