@@ -6,7 +6,7 @@ import AttemptsChart from './components/AttemptsChart'
 import { formatNum, toRad } from './lib/utils'
 import { runEllipseSearch } from './lib/search'
 import './App.css'
-import { createT, getLocaleFromPath, getLocaleHref } from './i18n'
+import { createT, getLocaleFromQuery, getLocaleHref } from './i18n'
 
 const versionCode = "v0.0.1.1222.4";
 
@@ -452,9 +452,9 @@ function AppContent({ t, locale, localeLinks }) {
 }
 
 function App() {
-  const pathname =
-    typeof window !== 'undefined' ? window.location.pathname : '/'
-  const locale = getLocaleFromPath(pathname)
+  const search =
+    typeof window !== 'undefined' ? window.location.search : ''
+  const locale = getLocaleFromQuery(search)
   const t = createT(locale)
   const baseUrl = typeof import.meta !== 'undefined' ? import.meta.env.BASE_URL : '/'
   const localeLinks = {

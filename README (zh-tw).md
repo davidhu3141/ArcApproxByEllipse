@@ -8,7 +8,7 @@ README.md
 
 <!-- pic, site gif -->
 
-使用看看：https://davidhu3141.github.io/ArcApproxByEllipse/index.html
+使用看看：https://davidhu3141.github.io/ArcApproxByEllipse/?lang=zh-tw
 
 
 

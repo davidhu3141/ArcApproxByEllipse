@@ -5,7 +5,7 @@ README.md
 
 The purpose of this project is to find small ellipses whose arcs can approximate a circular arc that has a massive radius but a relatively short chord length.
 
-Try it: https://davidhu3141.github.io/ArcApproxByEllipse/index.html
+Try it: https://davidhu3141.github.io/ArcApproxByEllipse/?lang=en
 
 
 

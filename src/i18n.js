@@ -120,16 +120,9 @@ const getByPath = (obj, path) =>
 
 const normalizeLocale = (locale) => (locale === 'zh-tw' ? 'zh-tw' : 'en')
 
-const getLocaleFromPath = (pathname) => {
-  const trimmed = pathname.replace(/\/+$/, '')
-  if (
-    trimmed === '/zh-tw' ||
-    trimmed.endsWith('/zh-tw') ||
-    trimmed.endsWith('/zh-tw/index.html')
-  ) {
-    return 'zh-tw'
-  }
-  return 'en'
+const getLocaleFromQuery = (search) => {
+  const params = new URLSearchParams(search || '')
+  return normalizeLocale(params.get('lang'))
 }
 
 const normalizeBaseUrl = (baseUrl) => {
@@ -139,10 +132,8 @@ const normalizeBaseUrl = (baseUrl) => {
 
 const getLocaleHref = (baseUrl, targetLocale) => {
   const normalized = normalizeBaseUrl(baseUrl || '/')
-  if (targetLocale === 'zh-tw') {
-    return `${normalized}zh-tw`
-  }
-  return normalized
+  const locale = normalizeLocale(targetLocale)
+  return `${normalized}?lang=${locale}`
 }
 
 const createT = (locale) => {
@@ -154,4 +145,4 @@ const createT = (locale) => {
   }
 }
 
-export { MESSAGES, createT, getLocaleFromPath, getLocaleHref, normalizeLocale }
+export { MESSAGES, createT, getLocaleFromQuery, getLocaleHref, normalizeLocale }
