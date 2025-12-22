@@ -10,6 +10,7 @@ import { createT, getLocaleFromQuery, getLocaleHref } from './i18n'
 import githubMark from './assets/github-mark-white.svg'
 
 const versionCode = "v0.0.1.1222.4";
+const underDev = true;
 
 const isDevMode = false;
 const maxStepNumber = isDevMode ? 50 : 30;
@@ -135,7 +136,7 @@ function AppContent({ t, locale, localeLinks }) {
           </p>
           <div className="hero__meta">
             <span className="pill">{versionCode}</span>
-            <span className="pill">{t('app.status')}</span>
+            {underDev ? <span className="pill">{t('app.status')}</span> : <></>}
             <div className="lang-switch">
               <span className="lang-label">{t('app.langSwitch')}</span>
               <a
