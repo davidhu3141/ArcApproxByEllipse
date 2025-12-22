@@ -37,11 +37,13 @@ const MESSAGES = {
       statL2: 'L2',
       statL3: 'L3',
       noBest: 'No passing ellipse yet.',
-      searchSettingsTitle: 'Search settings',
+      searchSettingsTitle: 'Advanced search settings',
       expand: 'Expand',
       collapse: 'Collapse',
       advancedHelper:
         'Control sampling steps for P (midpoint), Q (right quarter), and R (right endpoint) plus arc sampling steps (ts).',
+      advancedWarning:
+        'Warning: changing these settings may slow down the calculations.',
       minimizeByLabel: 'Optimization target (usually does not affect results)',
       minimizeByA: 'Minimize a',
       minimizeBySum: 'Minimize a + b',
@@ -55,6 +57,9 @@ const MESSAGES = {
       showAttempts: 'Show "Tried ellipse semi-axes" chart',
       disableP: 'Disable P sampling (always on arc)',
       disableR: 'Disable R sampling (always on arc)',
+      readmeTitle: 'Readme',
+      readmeHelper: 'Learn more about the background of the project and computation details.',
+      readmeLink: 'Open GitHub README',
     },
   },
   'zh-tw': {
@@ -94,11 +99,12 @@ const MESSAGES = {
       statL2: 'L2',
       statL3: 'L3',
       noBest: '尚未找到符合的橢圓。',
-      searchSettingsTitle: '搜尋設定',
+      searchSettingsTitle: '進階搜尋設定',
       expand: '展開',
       collapse: '收合',
       advancedHelper:
         '控制橢圓弧上三點 P (中點), Q (右邊 1/4 處), R (右端點) 的取樣步數與弧長取樣步數 (ts)。',
+      advancedWarning: '注意：調整這些設定可能會讓計算變慢。',
       minimizeByLabel: '搜尋目標 (通常不會影響結果)',
       minimizeByA: 'a 最小',
       minimizeBySum: 'a + b 最小',
@@ -111,6 +117,9 @@ const MESSAGES = {
       showAttempts: '顯示「已嘗試的橢圓半軸」圖表',
       disableP: '停用 P 取樣 (恆取在圓弧上)',
       disableR: '停用 R 取樣 (恆取在圓弧上)',
+      readmeTitle: 'Readme',
+      readmeHelper: '查看本專案的開發背景說明與運算細節。',
+      readmeLink: '前往 GitHub README',
     },
   },
 }

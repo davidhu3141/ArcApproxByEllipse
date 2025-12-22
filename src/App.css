@@ -135,6 +135,27 @@ h3 {
   gap: 16px;
 }
 
+.intro-layout {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-areas:
+    "viewport animation"
+    "basic basic";
+}
+
+.intro-layout__viewport {
+  grid-area: viewport;
+}
+
+.intro-layout__basic {
+  grid-area: basic;
+}
+
+.intro-layout__animation {
+  grid-area: animation;
+}
+
 .panel__head {
   display: flex;
   align-items: flex-end;
@@ -179,14 +200,35 @@ h3 {
   padding: 6px 10px;
   border-radius: 8px;
   cursor: pointer;
+  text-decoration: none;
+}
+
+.readme-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: #cde7ff;
+  text-decoration: none;
+  word-break: break-all;
+}
+
+.readme-link:hover {
+  color: #e9efff;
+}
+
+.readme-link img {
+  width: 18px;
+  height: 18px;
 }
 
 .helper-text {
   margin: 0;
   color: var(--muted);
   font-size: 14px;
-  max-width: 320px;
-  text-align: right;
+}
+
+.helper-text--warning {
+  color: #ffd666;
 }
 
 .input-grid {
@@ -455,6 +497,14 @@ h3 {
 @media (max-width: 840px) {
   .hero {
     grid-template-columns: 1fr;
+  }
+
+  .intro-layout {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      "viewport"
+      "basic"
+      "animation";
   }
 
   .panel__head {

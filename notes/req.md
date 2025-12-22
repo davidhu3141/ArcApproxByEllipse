@@ -122,3 +122,19 @@ req9
 
 
 
+req10
+-----
+
+1. 手機版排版的情況下，橢圓規演示區塊移動到圓弧設定之後
+2. 進階搜尋設定中顯示一行 warning 說改動這些設定可能導致計算較慢
+3. 最後顯示一個區塊是展示 github readme 連結
+    - EN: https://github.com/davidhu3141/ArcApproxByEllipse/blob/main/README.md
+    - 繁中: https://github.com/davidhu3141/ArcApproxByEllipse/blob/main/README%20(zh-tw).md
+
+
+
+req11
+-----
+
+1. helper-text 不用靠右對齊或限制寬度，簡單設計就好
+2. Open github readme 那裡可以顯示完整網址就好，也不用做成按鈕，用 `<a>` 那種就可以。可以加上 github icon (我已放在 assets)
