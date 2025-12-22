@@ -37,6 +37,18 @@ function AppContent({ t, locale, localeLinks }) {
   const [errorSeries, setErrorSeries] = useState([])
   const [bestLengths, setBestLengths] = useState(null)
 
+  const bestTarget = (() => {
+    if (!bestAttempt) return null
+    if (minimizeBy === 'sum') {
+      return { label: t('app.statTargetSum'), value: bestAttempt.a + bestAttempt.b }
+    }
+    if (minimizeBy === 'l1l3') {
+      if (!bestLengths) return null
+      return { label: t('app.statTargetL1L3'), value: bestLengths.l1 + bestLengths.l3 }
+    }
+    return { label: t('app.statTargetA'), value: bestAttempt.a }
+  })()
+
   const handleRadiusChange = (value) => {
     setRadius(value)
     if (value === '') return
@@ -228,10 +240,12 @@ function AppContent({ t, locale, localeLinks }) {
               <p className="stat-label">{t('app.statErr')}</p>
               <p className="stat-value">{formatNum(bestAttempt.err, 6)}</p>
             </div>
-            <div className="stat">
-              <p className="stat-label">{t('app.statSum')}</p>
-              <p className="stat-value">{formatNum(bestAttempt.a + bestAttempt.b, 4)}</p>
-            </div>
+            {bestTarget && (
+              <div className="stat">
+                <p className="stat-label">{bestTarget.label}</p>
+                <p className="stat-value">{formatNum(bestTarget.value, 4)}</p>
+              </div>
+            )}
             {bestLengths && (
               <>
                 <div className="stat">
