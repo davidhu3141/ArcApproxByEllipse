@@ -10,6 +10,7 @@ const MESSAGES = {
       langZhTw: '繁中',
       charts: {
         viewportTitle: 'Circle and ellipse',
+        animationTitle: 'Archimedes ellipse rig',
         errorTitle: 'Error vs angle',
         attemptsTitle: 'Tried ellipse semi-axes',
       },
@@ -58,6 +59,7 @@ const MESSAGES = {
       langZhTw: '繁中',
       charts: {
         viewportTitle: '圓與橢圓',
+        animationTitle: '橢圓規動畫',
         errorTitle: '各角度誤差',
         attemptsTitle: '已嘗試的橢圓半軸',
       },

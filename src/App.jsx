@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import ArcViewportChart from './components/ArcViewportChart'
+import ArchiAnimationChart from './components/ArchiAnimationChart'
 import ErrorChart from './components/ErrorChart'
 import AttemptsChart from './components/AttemptsChart'
 import { formatNum, toRad } from './lib/utils'
@@ -126,6 +127,14 @@ function AppContent({ t, locale, localeLinks }) {
       <section className="charts-grid">
         <ArcViewportChart
           title={t('app.charts.viewportTitle')}
+          height={320}
+          radius={radius}
+          thetaDeg={theta}
+          bestEllipse={bestAttempt}
+          layoutToggle={showAttemptsChart}
+        />
+        <ArchiAnimationChart
+          title={t('app.charts.animationTitle')}
           height={320}
           radius={radius}
           thetaDeg={theta}
