@@ -39,7 +39,7 @@ function AppContent({ t, locale, localeLinks }) {
   const radiusNum = parseFloat(radius)
   const toleranceNum = parseFloat(tolerance)
   const radiusSliderMax = 2000
-  const toleranceSliderMax = 5
+  const toleranceSliderMax = 1
   const chordMax = Number.isFinite(radiusNum) && radiusNum > 0 ? radiusNum * 2 : 2000
   const radiusSliderValue = Number.isFinite(radiusNum) ? Math.min(radiusNum, radiusSliderMax) : 0
   const thetaNum = parseFloat(theta)
