@@ -281,46 +281,51 @@ function AppContent({ t, locale, localeLinks }) {
           </div>
         </div>
         {bestAttempt ? (
-          <div className="best-grid">
-            <div className="stat">
-              <p className="stat-label">{t('app.statA')}</p>
-              <p className="stat-value">{formatNum(bestAttempt.a, 4)}</p>
-            </div>
-            <div className="stat">
-              <p className="stat-label">{t('app.statB')}</p>
-              <p className="stat-value">{formatNum(bestAttempt.b, 4)}</p>
-            </div>
-            <div className="stat">
-              <p className="stat-label">{t('app.statH')}</p>
-              <p className="stat-value">{formatNum(bestAttempt.h, 4)}</p>
-            </div>
-            <div className="stat">
-              <p className="stat-label">{t('app.statErr')}</p>
-              <p className="stat-value">{formatNum(bestAttempt.err, 6)}</p>
-            </div>
-            {bestTarget && (
+          <>
+            <p className="helper-text">
+              {t('app.bestNote')}
+            </p>
+            <div className="best-grid">
               <div className="stat">
-                <p className="stat-label">{bestTarget.label}</p>
-                <p className="stat-value">{formatNum(bestTarget.value, 4)}</p>
+                <p className="stat-label">{t('app.statA')}</p>
+                <p className="stat-value">{formatNum(bestAttempt.a, 4)}</p>
               </div>
-            )}
-            {bestLengths && (
-              <>
+              <div className="stat">
+                <p className="stat-label">{t('app.statB')}</p>
+                <p className="stat-value">{formatNum(bestAttempt.b, 4)}</p>
+              </div>
+              <div className="stat">
+                <p className="stat-label">{t('app.statH')}</p>
+                <p className="stat-value">{formatNum(bestAttempt.h, 4)}</p>
+              </div>
+              <div className="stat">
+                <p className="stat-label">{t('app.statErr')}</p>
+                <p className="stat-value">{formatNum(bestAttempt.err, 6)}</p>
+              </div>
+              {bestTarget && (
                 <div className="stat">
-                  <p className="stat-label">{t('app.statL1')}</p>
-                  <p className="stat-value">{formatNum(bestLengths.l1, 4)}</p>
+                  <p className="stat-label">{bestTarget.label}</p>
+                  <p className="stat-value">{formatNum(bestTarget.value, 4)}</p>
                 </div>
-                <div className="stat">
-                  <p className="stat-label">{t('app.statL2')}</p>
-                  <p className="stat-value">{formatNum(bestLengths.l2, 4)}</p>
-                </div>
-                <div className="stat">
-                  <p className="stat-label">{t('app.statL3')}</p>
-                  <p className="stat-value">{formatNum(bestLengths.l3, 4)}</p>
-                </div>
-              </>
-            )}
-          </div>
+              )}
+              {bestLengths && (
+                <>
+                  <div className="stat">
+                    <p className="stat-label">{t('app.statL1')}</p>
+                    <p className="stat-value">{formatNum(bestLengths.l1, 4)}</p>
+                  </div>
+                  <div className="stat">
+                    <p className="stat-label">{t('app.statL2')}</p>
+                    <p className="stat-value">{formatNum(bestLengths.l2, 4)}</p>
+                  </div>
+                  <div className="stat">
+                    <p className="stat-label">{t('app.statL3')}</p>
+                    <p className="stat-value">{formatNum(bestLengths.l3, 4)}</p>
+                  </div>
+                </>
+              )}
+            </div>
+          </>
         ) : (
           <p className="helper-text">{t('app.noBest')}</p>
         )}
