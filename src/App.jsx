@@ -8,7 +8,7 @@ import { runEllipseSearch } from './lib/search'
 import './App.css'
 import { createT, getLocaleFromQuery, getLocaleHref } from './i18n'
 
-const versionCode = "v0.0.1.1222.4";
+const versionCode = "v0.0.1.1222.5";
 
 const isDevMode = false;
 const maxStepNumber = isDevMode ? 50 : 30;
