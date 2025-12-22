@@ -6,6 +6,7 @@ const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 
 function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, bestLengths, title, layoutToggle, height = 320 }) {
   const containerRef = useRef(null)
+  const lastWidthRef = useRef(null)
 
   useEffect(() => {
     const container = containerRef.current
@@ -27,6 +28,7 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, bestLengths, title
 
     const draw = () => {
       const width = container.clientWidth || 640
+      lastWidthRef.current = width
       d3.select(container).selectAll('*').remove()
 
       const svg = d3
@@ -345,7 +347,11 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, bestLengths, title
     }
 
     draw()
-    const handleResize = () => draw()
+    const handleResize = () => {
+      const width = container.clientWidth || 640
+      if (Math.abs((lastWidthRef.current ?? 0) - width) < 1) return
+      draw()
+    }
     window.addEventListener('resize', handleResize)
     return () => {
       window.removeEventListener('resize', handleResize)
