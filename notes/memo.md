@@ -18,6 +18,14 @@ todo: code review script and refine
 
 - [x] default toler = 0.4
 - [x] default d steps = 25
-- [ ] var names
+- [x] var names
 
 - [x] Q vs P
+
+優先順序
+- 可用性
+    - 工具文字說明
+    - 完成的動畫
+- 文件
+
+

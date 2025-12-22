@@ -203,11 +203,6 @@ function AppContent({ t, locale, localeLinks }) {
             />
           </label>
         </div>
-        <div className="panel__foot">
-          <p>
-            {t('app.basicFoot')}
-          </p>
-        </div>
       </section>
 
       <section className="panel">
