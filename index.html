@@ -5,6 +5,17 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ellipse-ui</title>
+    <script>
+      (function () {
+        var params = new URLSearchParams(window.location.search)
+        if (!params.has('p')) return
+        var path = params.get('p') || '/'
+        var query = params.get('q')
+        var hash = window.location.hash || ''
+        var newUrl = path + (query ? '?' + query : '') + hash
+        window.history.replaceState(null, '', newUrl)
+      })()
+    </script>
   </head>
   <body>
     <div id="root"></div>
