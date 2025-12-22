@@ -24,7 +24,7 @@ todo: code review script and refine
 
 優先順序
 - 可用性
-    - 工具文字說明
+    - [x] 工具文字說明
     - 完成的動畫
 - 文件
 
