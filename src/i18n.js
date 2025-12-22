@@ -37,7 +37,7 @@ const MESSAGES = {
       statL2: 'L2',
       statL3: 'L3',
       bestNote:
-        'The definitions of L1, L2, and L3 are shown in the animation above; on the Archimedean ellipse trammel rod, the distances from the pen to the two nodes (shuttles/pins/sliders) are a and b.',
+        'The definitions of L1, L2, and L3 are shown in the animation above; on the Archimedean ellipse trammel rod, the distances from the pen to the two nodes (shuttles/nails/sliders) are a and b.',
       noBest: 'No passing ellipse yet.',
       searchSettingsTitle: 'Advanced search settings',
       expand: 'Expand',

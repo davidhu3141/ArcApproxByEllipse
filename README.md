@@ -16,7 +16,7 @@ A friend of mine wanted to cut a circular arc with radius `700 cm` and chord len
 
 I do not know whether this approach fits real woodworking needs or construction scenarios, but building this project feels like a fun way to explore relationships between ellipses and circles. It may even turn out to be helpful for someone, so I decided to try it.
 
-An Archimedean ellipse trammel means that you drill two nails into a wooden bar (green line below), attach a pen at another point (black dot), and let the nails slide along two perpendicular grooves (red and blue dots). The pen will trace an ellipse. The ellipse semi-major/minor axes are just the distances from the pen to each nail.
+An Archimedean ellipse trammel means that you drill two nails into a wooden rod (green line below), attach a pen at another point (black dot), and let the nails slide along two perpendicular grooves (red and blue dots). The pen will trace an ellipse. The ellipse semi-major/minor axes are just the distances from the pen to each nail.
 
 The figure below shows the case where the pen is between the two nails.
 
