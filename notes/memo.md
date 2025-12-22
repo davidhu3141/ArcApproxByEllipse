@@ -29,3 +29,5 @@ todo: code review script and refine
 - 文件
 
 手機版跟電腦版切換時 圖表尺度怪怪
+
+文字對齊調整

@@ -14,7 +14,7 @@ const MESSAGES = {
         errorTitle: 'Error vs angle',
         attemptsTitle: 'Tried ellipse semi-axes',
       },
-      basicSettingsTitle: 'Basic settings',
+      basicSettingsTitle: 'Arc settings',
       basicSettingsHelper:
         'Enter the radius, central angle or chord length, and tolerance.',
       fieldRadius: 'Radius',
@@ -41,7 +41,7 @@ const MESSAGES = {
       expand: 'Expand',
       collapse: 'Collapse',
       advancedHelper:
-        'Control sampling steps for P (midpoint), Q (right quarter), and R (right endpoint) plus arc sampling steps (ts). If the resulting ellipse is larger than the current smallest, you can skip error checks. You can also force P/R to stay on the arc.',
+        'Control sampling steps for P (midpoint), Q (right quarter), and R (right endpoint) plus arc sampling steps (ts).',
       minimizeByLabel: 'Optimization target (usually does not affect results)',
       minimizeByA: 'Minimize a',
       minimizeBySum: 'Minimize a + b',
@@ -72,8 +72,8 @@ const MESSAGES = {
         errorTitle: '各角度誤差',
         attemptsTitle: '已嘗試的橢圓半軸',
       },
-      basicSettingsTitle: '基本設定',
-      basicSettingsHelper: '輸入半徑、圓心角或弦長、誤差容忍值',
+      basicSettingsTitle: '圓弧設定',
+      basicSettingsHelper: '輸入半徑、圓心角或弦長、誤差容許值',
       fieldRadius: '半徑',
       fieldTheta: '角度',
       fieldChord: '弦長',
@@ -98,7 +98,7 @@ const MESSAGES = {
       expand: '展開',
       collapse: '收合',
       advancedHelper:
-        '控制橢圓弧上三點 P (中點), Q (右邊 1/4 處), R (右端點) 的取樣步數與弧長取樣步數 (ts)。三點決定出的橢圓比目前最小者還大時可跳過誤差值驗證。可強制 P/R 在圓弧上。',
+        '控制橢圓弧上三點 P (中點), Q (右邊 1/4 處), R (右端點) 的取樣步數與弧長取樣步數 (ts)。',
       minimizeByLabel: '搜尋目標 (通常不會影響結果)',
       minimizeByA: 'a 最小',
       minimizeBySum: 'a + b 最小',

@@ -7,19 +7,19 @@
     "react": {
       "src": "../../node_modules/react/index.js",
       "file": "react.js",
-      "fileHash": "cab8f438",
+      "fileHash": "862d86b2",
       "needsInterop": true
     },
     "react-dom/client": {
       "src": "../../node_modules/react-dom/client.js",
       "file": "react-dom_client.js",
-      "fileHash": "d90bf2c3",
+      "fileHash": "46a27a4a",
       "needsInterop": true
     },
     "d3": {
       "src": "../../node_modules/d3/src/index.js",
       "file": "d3.js",
-      "fileHash": "a9d889e8",
+      "fileHash": "96346ccd",
       "needsInterop": false
     }
   },
