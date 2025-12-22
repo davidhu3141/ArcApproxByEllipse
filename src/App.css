@@ -205,6 +205,12 @@ h3 {
   padding: 12px;
 }
 
+.field__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
 .field span {
   font-size: 14px;
   color: var(--muted);
@@ -218,6 +224,12 @@ h3 {
   padding: 10px;
   color: #e9efff;
   font-size: 15px;
+}
+
+.field input[type='range'] {
+  padding: 0;
+  height: 6px;
+  accent-color: var(--accent);
 }
 
 .field select {

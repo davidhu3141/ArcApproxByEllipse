@@ -36,6 +36,17 @@ function AppContent({ t, locale, localeLinks }) {
   const [bestAttempt, setBestAttempt] = useState(null)
   const [errorSeries, setErrorSeries] = useState([])
   const [bestLengths, setBestLengths] = useState(null)
+  const radiusNum = parseFloat(radius)
+  const toleranceNum = parseFloat(tolerance)
+  const radiusSliderMax = 2000
+  const toleranceSliderMax = 1
+  const chordMax = Number.isFinite(radiusNum) && radiusNum > 0 ? radiusNum * 2 : 2000
+  const radiusSliderValue = Number.isFinite(radiusNum) ? Math.min(radiusNum, radiusSliderMax) : 0
+  const thetaNum = parseFloat(theta)
+  const thetaSliderValue = Number.isFinite(thetaNum) ? Math.min(thetaNum, 180) : 0
+  const chordNum = parseFloat(chord)
+  const chordSliderValue = Number.isFinite(chordNum) ? Math.min(chordNum, chordMax) : 0
+  const toleranceSliderValue = Number.isFinite(toleranceNum) ? Math.min(toleranceNum, toleranceSliderMax) : 0
 
   const bestTarget = (() => {
     if (!bestAttempt) return null
@@ -172,46 +183,86 @@ function AppContent({ t, locale, localeLinks }) {
         <div className="input-grid">
           <label className="field">
             <span>{t('app.fieldRadius')}</span>
-            <input
-              type="number"
-              min="0"
-              value={radius}
-              onChange={(e) => handleRadiusChange(e.target.value)}
-              placeholder={t('app.placeholderRadius')}
-            />
+            <div className="field__controls">
+              <input
+                type="range"
+                min="0"
+                max={radiusSliderMax}
+                step="1"
+                value={radiusSliderValue}
+                onChange={(e) => handleRadiusChange(e.target.value)}
+              />
+              <input
+                type="number"
+                min="0"
+                value={radius}
+                onChange={(e) => handleRadiusChange(e.target.value)}
+                placeholder={t('app.placeholderRadius')}
+              />
+            </div>
           </label>
           <label className="field">
             <span>{t('app.fieldTheta')}</span>
-            <input
-              type="number"
-              value={theta}
-              min="0"
-              max="180"
-              onChange={(e) => handleThetaChange(e.target.value)}
-              placeholder={t('app.placeholderTheta')}
-            />
+            <div className="field__controls">
+              <input
+                type="range"
+                min="0"
+                max="180"
+                step="0.1"
+                value={thetaSliderValue}
+                onChange={(e) => handleThetaChange(e.target.value)}
+              />
+              <input
+                type="number"
+                value={theta}
+                min="0"
+                max="180"
+                onChange={(e) => handleThetaChange(e.target.value)}
+                placeholder={t('app.placeholderTheta')}
+              />
+            </div>
           </label>
           <label className="field">
             <span>{t('app.fieldChord')}</span>
-            <input
-              type="number"
-              min="0"
-              max={radius !== '' && Number.isFinite(parseFloat(radius)) ? 2 * parseFloat(radius) : undefined}
-              value={chord}
-              onChange={(e) => handleChordChange(e.target.value)}
-              placeholder={t('app.placeholderChord')}
-            />
+            <div className="field__controls">
+              <input
+                type="range"
+                min="0"
+                max={chordMax}
+                step="0.1"
+                value={chordSliderValue}
+                onChange={(e) => handleChordChange(e.target.value)}
+              />
+              <input
+                type="number"
+                min="0"
+                max={radius !== '' && Number.isFinite(parseFloat(radius)) ? 2 * parseFloat(radius) : undefined}
+                value={chord}
+                onChange={(e) => handleChordChange(e.target.value)}
+                placeholder={t('app.placeholderChord')}
+              />
+            </div>
           </label>
           <label className="field">
             <span>{t('app.fieldTolerance')}</span>
-            <input
-              type="number"
-              min="0"
-              step="0.01"
-              value={tolerance}
-              onChange={(e) => setTolerance(e.target.value)}
-              placeholder={t('app.placeholderTolerance')}
-            />
+            <div className="field__controls">
+              <input
+                type="range"
+                min="0"
+                max={toleranceSliderMax}
+                step="0.01"
+                value={toleranceSliderValue}
+                onChange={(e) => setTolerance(e.target.value)}
+              />
+              <input
+                type="number"
+                min="0"
+                step="0.01"
+                value={tolerance}
+                onChange={(e) => setTolerance(e.target.value)}
+                placeholder={t('app.placeholderTolerance')}
+              />
+            </div>
           </label>
         </div>
       </section>
