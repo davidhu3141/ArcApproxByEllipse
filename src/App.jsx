@@ -35,6 +35,7 @@ function AppContent({ t, locale, localeLinks }) {
   const [attempts, setAttempts] = useState([])
   const [bestAttempt, setBestAttempt] = useState(null)
   const [errorSeries, setErrorSeries] = useState([])
+  const [bestLengths, setBestLengths] = useState(null)
 
   const handleRadiusChange = (value) => {
     setRadius(value)
@@ -73,7 +74,7 @@ function AppContent({ t, locale, localeLinks }) {
   }
 
   const runSearch = useCallback(() => {
-    const { attempts: a, bestAttempt: best, errorSeries: es } = runEllipseSearch({
+    const { attempts: a, bestAttempt: best, errorSeries: es, bestLengths: lengths } = runEllipseSearch({
       radius: parseFloat(radius),
       thetaDeg: parseFloat(theta),
       tolerance: parseFloat(tolerance),
@@ -90,6 +91,7 @@ function AppContent({ t, locale, localeLinks }) {
     setAttempts(a)
     setBestAttempt(best)
     setErrorSeries(es)
+    setBestLengths(lengths)
   }, [radius, theta, tolerance, offsetStepsD, offsetStepsD1, offsetStepsD2, tsSteps, skipWorse, forceZeroD1, forceZeroD2, minimizeBy])
 
   useEffect(() => {
@@ -141,6 +143,7 @@ function AppContent({ t, locale, localeLinks }) {
           radius={radius}
           thetaDeg={theta}
           bestEllipse={bestAttempt}
+          bestLengths={bestLengths}
           layoutToggle={showAttemptsChart}
         />
       </section>
@@ -229,6 +232,22 @@ function AppContent({ t, locale, localeLinks }) {
               <p className="stat-label">{t('app.statSum')}</p>
               <p className="stat-value">{formatNum(bestAttempt.a + bestAttempt.b, 4)}</p>
             </div>
+            {bestLengths && (
+              <>
+                <div className="stat">
+                  <p className="stat-label">{t('app.statL1')}</p>
+                  <p className="stat-value">{formatNum(bestLengths.l1, 4)}</p>
+                </div>
+                <div className="stat">
+                  <p className="stat-label">{t('app.statL2')}</p>
+                  <p className="stat-value">{formatNum(bestLengths.l2, 4)}</p>
+                </div>
+                <div className="stat">
+                  <p className="stat-label">{t('app.statL3')}</p>
+                  <p className="stat-value">{formatNum(bestLengths.l3, 4)}</p>
+                </div>
+              </>
+            )}
           </div>
         ) : (
           <p className="helper-text">{t('app.noBest')}</p>

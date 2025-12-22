@@ -372,6 +372,22 @@ h3 {
   stroke-width: 2.4;
 }
 
+.rig-label {
+  fill: #cde7ff;
+  font-size: 12px;
+  font-weight: 600;
+  text-anchor: middle;
+  pointer-events: none;
+}
+
+.rig-values {
+  fill: #cde7ff;
+  font-size: 12px;
+  font-weight: 600;
+  text-anchor: start;
+  pointer-events: none;
+}
+
 .center-dot {
   fill: #ffd666;
   stroke: rgba(0, 0, 0, 0.4);

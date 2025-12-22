@@ -1,10 +1,10 @@
 import { useEffect, useRef } from 'react'
 import * as d3 from 'd3'
-import { toRad } from '../lib/utils'
+import { formatNum, toRad } from '../lib/utils'
 
 const clamp = (value, min, max) => Math.min(max, Math.max(min, value))
 
-function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, title, layoutToggle, height = 320 }) {
+function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, bestLengths, title, layoutToggle, height = 320 }) {
   const containerRef = useRef(null)
 
   useEffect(() => {
@@ -128,6 +128,10 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, title, layoutToggl
       const l2ALine = svg.append('line').attr('class', 'rig-line rig-line--l2')
       const l2BLine = svg.append('line').attr('class', 'rig-line rig-line--l2')
       const l3Line = svg.append('line').attr('class', 'rig-line rig-line--l3')
+      const l1Label = svg.append('text').attr('class', 'rig-label')
+      const l2Label = svg.append('text').attr('class', 'rig-label')
+      const l3Label = svg.append('text').attr('class', 'rig-label')
+      const valueLabel = svg.append('text').attr('class', 'rig-values')
 
       l1Line
         .attr('x1', xScale(chordMid.x))
@@ -153,6 +157,38 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, title, layoutToggl
         .attr('y1', yScale(center.y))
         .attr('x2', xScale(center.x))
         .attr('y2', yScale(center.y - armLen))
+
+      l1Label
+        .attr('x', xScale(center.x))
+        .attr('y', yScale((center.y + chordMid.y) / 2))
+        .text('L1')
+
+      l2Label
+        .attr('x', xScale(center.x + l2Offset / 2))
+        .attr('y', yScale(center.y))
+        .text('L2')
+
+      l3Label
+        .attr('x', xScale(center.x))
+        .attr('y', yScale(center.y - armLen / 2))
+        .text('L3')
+
+      if (bestLengths) {
+        const lines = [
+          `L1 = ${formatNum(bestLengths.l1, 4)}`,
+          `L2 = ${formatNum(bestLengths.l2, 4)}`,
+          `L3 = ${formatNum(bestLengths.l3, 4)}`,
+        ]
+        valueLabel
+          .attr('x', padding + 6)
+          .attr('y', padding + 12)
+          .selectAll('tspan')
+          .data(lines)
+          .join('tspan')
+          .attr('x', padding + 6)
+          .attr('dy', (_, i) => (i === 0 ? 0 : 14))
+          .text((d) => d)
+      }
 
       const sLine = svg.append('line').attr('class', 'rig-arm')
       const n1 = svg.append('circle').attr('class', 'rig-node')
@@ -256,6 +292,9 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, title, layoutToggl
         l2ALine.attr('opacity', l2Opacity)
         l2BLine.attr('opacity', l2Opacity)
         l3Line.attr('opacity', l3Opacity)
+        l1Label.attr('opacity', l1Opacity)
+        l2Label.attr('opacity', l2Opacity)
+        l3Label.attr('opacity', l3Opacity)
         sLine.attr('opacity', sOpacity)
         n1.attr('opacity', sOpacity)
         n2.attr('opacity', sOpacity)
@@ -272,6 +311,9 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, title, layoutToggl
       l2ALine.attr('opacity', 0)
       l2BLine.attr('opacity', 0)
       l3Line.attr('opacity', 0)
+      l1Label.attr('opacity', 0)
+      l2Label.attr('opacity', 0)
+      l3Label.attr('opacity', 0)
       sLine.attr('opacity', 0)
       n1.attr('opacity', 0)
       n2.attr('opacity', 0)

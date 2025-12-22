@@ -64,7 +64,7 @@ export function runEllipseSearch({
   const e = Number(tolerance)
 
   if (!(Number.isFinite(r) && r > 0 && Number.isFinite(tDeg) && tDeg > 0 && tDeg <= 180 && Number.isFinite(e) && e > 0)) {
-    return { attempts: [], bestAttempt: null, errorSeries: [] }
+    return { attempts: [], bestAttempt: null, errorSeries: [], bestLengths: null }
   }
 
   const thetaRad = toRad(tDeg)
@@ -160,9 +160,25 @@ export function runEllipseSearch({
     .filter((a) => a.accepted)
     .sort((a, b) => metricFor(a.a, a.b, a.h) - metricFor(b.a, b.b, b.h))[0] || null
 
+  const bestLengths = bestAttempt
+    ? (() => {
+      const chordMidY = r * Math.cos(half)
+      const chordRightX = r * Math.sin(half)
+      const { a, b, h } = bestAttempt
+      if (!Number.isFinite(a) || !Number.isFinite(b) || !Number.isFinite(h) || a === 0) return null
+      const ratio = Math.max(-1, Math.min(1, chordRightX / a))
+      const t0 = Math.acos(ratio)
+      const l1 = Math.abs(h - chordMidY)
+      const l3 = Math.abs(a - b)
+      const l2 = Math.abs(l3 * Math.cos(t0))
+      return { l1, l2, l3 }
+    })()
+    : null
+
   return {
     attempts: attemptsList,
     bestAttempt,
     errorSeries: bestAttempt ? bestAttempt.series : [],
+    bestLengths,
   }
 }
