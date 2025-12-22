@@ -130,6 +130,7 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, bestLengths, title
       const l3Line = svg.append('line').attr('class', 'rig-line rig-line--l3')
       const l1Label = svg.append('text').attr('class', 'rig-label')
       const l2Label = svg.append('text').attr('class', 'rig-label')
+      const l2BLabel = svg.append('text').attr('class', 'rig-label')
       const l3Label = svg.append('text').attr('class', 'rig-label')
       const valueLabel = svg.append('text').attr('class', 'rig-values')
 
@@ -159,12 +160,17 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, bestLengths, title
         .attr('y2', yScale(center.y - armLen))
 
       l1Label
-        .attr('x', xScale(center.x))
+        .attr('x', xScale((center.x + chordMid.x) / 2))
         .attr('y', yScale((center.y + chordMid.y) / 2))
         .text('L1')
 
       l2Label
         .attr('x', xScale(center.x + l2Offset / 2))
+        .attr('y', yScale(center.y))
+        .text('L2')
+
+      l2BLabel
+        .attr('x', xScale(center.x - l2Offset / 2))
         .attr('y', yScale(center.y))
         .text('L2')
 
@@ -230,7 +236,8 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, bestLengths, title
 
       const timings = {
         l1: 800,
-        l2: 800,
+        l2A: 800,
+        l2B: 800,
         l3: 800,
         s: 800,
         sweep: 1800,
@@ -238,8 +245,9 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, bestLengths, title
         pause: 800,
       }
       const tL1 = timings.l1
-      const tL2 = tL1 + timings.l2
-      const tL3 = tL2 + timings.l3
+      const tL2A = tL1 + timings.l2A
+      const tL2B = tL2A + timings.l2B
+      const tL3 = tL2B + timings.l3
       const tS = tL3 + timings.s
       const tSweep = tS + timings.sweep
       const tFade = tSweep + timings.fade
@@ -250,7 +258,8 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, bestLengths, title
         const elapsed = (now - startTime) % total
 
         let l1Opacity = 0
-        let l2Opacity = 0
+        let l2AOpacity = 0
+        let l2BOpacity = 0
         let l3Opacity = 0
         let sOpacity = 0
         let arcOpacity = 0
@@ -258,21 +267,28 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, bestLengths, title
 
         if (elapsed < tL1) {
           l1Opacity = elapsed / timings.l1
-        } else if (elapsed < tL2) {
+        } else if (elapsed < tL2A) {
           l1Opacity = 1
-          l2Opacity = (elapsed - tL1) / timings.l2
+          l2AOpacity = (elapsed - tL1) / timings.l2A
+        } else if (elapsed < tL2B) {
+          l1Opacity = 1
+          l2AOpacity = 1
+          l2BOpacity = (elapsed - tL2A) / timings.l2B
         } else if (elapsed < tL3) {
           l1Opacity = 1
-          l2Opacity = 1
-          l3Opacity = (elapsed - tL2) / timings.l3
+          l2AOpacity = 1
+          l2BOpacity = 1
+          l3Opacity = (elapsed - tL2B) / timings.l3
         } else if (elapsed < tS) {
           l1Opacity = 1
-          l2Opacity = 1
+          l2AOpacity = 1
+          l2BOpacity = 1
           l3Opacity = 1
           sOpacity = (elapsed - tL3) / timings.s
         } else if (elapsed < tSweep) {
           l1Opacity = 1
-          l2Opacity = 1
+          l2AOpacity = 1
+          l2BOpacity = 1
           l3Opacity = 1
           sOpacity = 1
           const prog = (elapsed - tS) / timings.sweep
@@ -281,7 +297,8 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, bestLengths, title
         } else if (elapsed < tFade) {
           const fade = 1 - (elapsed - tSweep) / timings.fade
           l1Opacity = fade
-          l2Opacity = fade
+          l2AOpacity = fade
+          l2BOpacity = fade
           l3Opacity = fade
           sOpacity = fade
           arcOpacity = fade
@@ -289,11 +306,12 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, bestLengths, title
         }
 
         l1Line.attr('opacity', l1Opacity)
-        l2ALine.attr('opacity', l2Opacity)
-        l2BLine.attr('opacity', l2Opacity)
+        l2ALine.attr('opacity', l2AOpacity)
+        l2BLine.attr('opacity', l2BOpacity)
         l3Line.attr('opacity', l3Opacity)
         l1Label.attr('opacity', l1Opacity)
-        l2Label.attr('opacity', l2Opacity)
+        l2Label.attr('opacity', l2AOpacity)
+        l2BLabel.attr('opacity', l2BOpacity)
         l3Label.attr('opacity', l3Opacity)
         sLine.attr('opacity', sOpacity)
         n1.attr('opacity', sOpacity)
@@ -313,6 +331,7 @@ function ArchiAnimationChart({ radius, thetaDeg, bestEllipse, bestLengths, title
       l3Line.attr('opacity', 0)
       l1Label.attr('opacity', 0)
       l2Label.attr('opacity', 0)
+      l2BLabel.attr('opacity', 0)
       l3Label.attr('opacity', 0)
       sLine.attr('opacity', 0)
       n1.attr('opacity', 0)
