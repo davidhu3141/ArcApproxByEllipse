@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import ArcViewportChart from './components/ArcViewportChart'
+import ArchiAnimationChart from './components/ArchiAnimationChart'
 import ErrorChart from './components/ErrorChart'
 import AttemptsChart from './components/AttemptsChart'
 import { formatNum, toRad } from './lib/utils'
@@ -26,6 +27,7 @@ function AppContent({ t, locale, localeLinks }) {
   const [offsetStepsD2, setOffsetStepsD2] = useState('10')
   const [tsSteps, setTsSteps] = useState('20')
   const [skipWorse, setSkipWorse] = useState(true)
+  const [minimizeBy, setMinimizeBy] = useState('a')
   const [forceZeroD1, setForceZeroD1] = useState(true)
   const [forceZeroD2, setForceZeroD2] = useState(true)
   const [showAttemptsChart, setShowAttemptsChart] = useState(isDevMode)
@@ -33,6 +35,19 @@ function AppContent({ t, locale, localeLinks }) {
   const [attempts, setAttempts] = useState([])
   const [bestAttempt, setBestAttempt] = useState(null)
   const [errorSeries, setErrorSeries] = useState([])
+  const [bestLengths, setBestLengths] = useState(null)
+
+  const bestTarget = (() => {
+    if (!bestAttempt) return null
+    if (minimizeBy === 'sum') {
+      return { label: t('app.statTargetSum'), value: bestAttempt.a + bestAttempt.b }
+    }
+    if (minimizeBy === 'l1l3') {
+      if (!bestLengths) return null
+      return { label: t('app.statTargetL1L3'), value: bestLengths.l1 + bestLengths.l3 }
+    }
+    return { label: t('app.statTargetA'), value: bestAttempt.a }
+  })()
 
   const handleRadiusChange = (value) => {
     setRadius(value)
@@ -71,7 +86,7 @@ function AppContent({ t, locale, localeLinks }) {
   }
 
   const runSearch = useCallback(() => {
-    const { attempts: a, bestAttempt: best, errorSeries: es } = runEllipseSearch({
+    const { attempts: a, bestAttempt: best, errorSeries: es, bestLengths: lengths } = runEllipseSearch({
       radius: parseFloat(radius),
       thetaDeg: parseFloat(theta),
       tolerance: parseFloat(tolerance),
@@ -83,11 +98,13 @@ function AppContent({ t, locale, localeLinks }) {
       constrainD1ForceZero: forceZeroD1,
       constrainD2ForceZero: forceZeroD2,
       maxStepNumber,
+      minimizeBy,
     })
     setAttempts(a)
     setBestAttempt(best)
     setErrorSeries(es)
-  }, [radius, theta, tolerance, offsetStepsD, offsetStepsD1, offsetStepsD2, tsSteps, skipWorse, forceZeroD1, forceZeroD2])
+    setBestLengths(lengths)
+  }, [radius, theta, tolerance, offsetStepsD, offsetStepsD1, offsetStepsD2, tsSteps, skipWorse, forceZeroD1, forceZeroD2, minimizeBy])
 
   useEffect(() => {
     runSearch()
@@ -130,6 +147,15 @@ function AppContent({ t, locale, localeLinks }) {
           radius={radius}
           thetaDeg={theta}
           bestEllipse={bestAttempt}
+          layoutToggle={showAttemptsChart}
+        />
+        <ArchiAnimationChart
+          title={t('app.charts.animationTitle')}
+          height={320}
+          radius={radius}
+          thetaDeg={theta}
+          bestEllipse={bestAttempt}
+          bestLengths={bestLengths}
           layoutToggle={showAttemptsChart}
         />
       </section>
@@ -214,10 +240,28 @@ function AppContent({ t, locale, localeLinks }) {
               <p className="stat-label">{t('app.statErr')}</p>
               <p className="stat-value">{formatNum(bestAttempt.err, 6)}</p>
             </div>
-            <div className="stat">
-              <p className="stat-label">{t('app.statSum')}</p>
-              <p className="stat-value">{formatNum(bestAttempt.a + bestAttempt.b, 4)}</p>
-            </div>
+            {bestTarget && (
+              <div className="stat">
+                <p className="stat-label">{bestTarget.label}</p>
+                <p className="stat-value">{formatNum(bestTarget.value, 4)}</p>
+              </div>
+            )}
+            {bestLengths && (
+              <>
+                <div className="stat">
+                  <p className="stat-label">{t('app.statL1')}</p>
+                  <p className="stat-value">{formatNum(bestLengths.l1, 4)}</p>
+                </div>
+                <div className="stat">
+                  <p className="stat-label">{t('app.statL2')}</p>
+                  <p className="stat-value">{formatNum(bestLengths.l2, 4)}</p>
+                </div>
+                <div className="stat">
+                  <p className="stat-label">{t('app.statL3')}</p>
+                  <p className="stat-value">{formatNum(bestLengths.l3, 4)}</p>
+                </div>
+              </>
+            )}
           </div>
         ) : (
           <p className="helper-text">{t('app.noBest')}</p>
@@ -336,6 +380,17 @@ function AppContent({ t, locale, localeLinks }) {
                   onChange={(e) => setForceZeroD2(e.target.checked)}
                 />
                 <span>{t('app.disableR')}</span>
+              </label>
+              <label className="field">
+                <span>{t('app.minimizeByLabel')}</span>
+                <select
+                  value={minimizeBy}
+                  onChange={(e) => setMinimizeBy(e.target.value)}
+                >
+                  <option value="a">{t('app.minimizeByA')}</option>
+                  <option value="sum">{t('app.minimizeBySum')}</option>
+                  <option value="l1l3">{t('app.minimizeByL1L3')}</option>
+                </select>
               </label>
             </div>
           </>

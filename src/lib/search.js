@@ -57,19 +57,21 @@ export function runEllipseSearch({
   constrainD1ForceZero = false,
   constrainD2ForceZero = false,
   maxStepNumber = 30,
+  minimizeBy = 'a',
 }) {
   const r = Number(radius)
   const tDeg = Number(thetaDeg)
   const e = Number(tolerance)
 
   if (!(Number.isFinite(r) && r > 0 && Number.isFinite(tDeg) && tDeg > 0 && tDeg <= 180 && Number.isFinite(e) && e > 0)) {
-    return { attempts: [], bestAttempt: null, errorSeries: [] }
+    return { attempts: [], bestAttempt: null, errorSeries: [], bestLengths: null }
   }
 
   const thetaRad = toRad(tDeg)
   const half = thetaRad / 2
   const quarter = thetaRad / 4
   const attemptsList = []
+  const chordMidY = r * Math.cos(half)
 
   const clampOffsetsD = Math.min(Math.max(Math.round(offsetsStepsD), 2), maxStepNumber)
   const clampOffsetsD1 = Math.min(Math.max(Math.round(offsetsStepsD1), 2), maxStepNumber)
@@ -88,7 +90,13 @@ export function runEllipseSearch({
   const d2s = constrainD2ForceZero ? [0] : sampleOffsets(clampOffsetsD2, true)
 
   let attemptId = 0
-  let bestAcceptedSum = Infinity
+  const metricFor = (a, b, h) => {
+    if (minimizeBy === 'sum') return a + b
+    if (minimizeBy === 'l1l3') return Math.abs(h - chordMidY) + Math.abs(a - b)
+    return a
+  }
+
+  let bestAcceptedMetric = Infinity
   for (const d of ds) {
     for (const d1 of d1s) {
       for (const d2 of d2s) {
@@ -107,8 +115,8 @@ export function runEllipseSearch({
           const canon = toCanonical(abc)
           if (canon.yDenomSign === '-') continue // hyperbola, skip
           const { a, b, h } = canon
-          const sumAB = a + b
-          if (skipWorseThanBest && bestAcceptedSum !== Infinity && sumAB >= bestAcceptedSum) {
+          const metric = metricFor(a, b, h)
+          if (skipWorseThanBest && bestAcceptedMetric !== Infinity && metric >= bestAcceptedMetric) {
             continue
           }
           const ratio = ((r + d2) * Math.cos(Math.PI / 2 - half)) / a
@@ -138,7 +146,7 @@ export function runEllipseSearch({
             series,
           })
           if (maxErr <= e) {
-            bestAcceptedSum = Math.min(bestAcceptedSum, sumAB)
+            bestAcceptedMetric = Math.min(bestAcceptedMetric, metric)
           }
           attemptId += 1
         } catch (err) {
@@ -150,11 +158,27 @@ export function runEllipseSearch({
 
   const bestAttempt = attemptsList
     .filter((a) => a.accepted)
-    .sort((a, b) => a.a + a.b - (b.a + b.b))[0] || null
+    .sort((a, b) => metricFor(a.a, a.b, a.h) - metricFor(b.a, b.b, b.h))[0] || null
+
+  const bestLengths = bestAttempt
+    ? (() => {
+      const chordMidY = r * Math.cos(half)
+      const chordRightX = r * Math.sin(half)
+      const { a, b, h } = bestAttempt
+      if (!Number.isFinite(a) || !Number.isFinite(b) || !Number.isFinite(h) || a === 0) return null
+      const ratio = Math.max(-1, Math.min(1, chordRightX / a))
+      const t0 = Math.acos(ratio)
+      const l1 = Math.abs(h - chordMidY)
+      const l3 = Math.abs(a - b)
+      const l2 = Math.abs(l3 * Math.cos(t0))
+      return { l1, l2, l3 }
+    })()
+    : null
 
   return {
     attempts: attemptsList,
     bestAttempt,
     errorSeries: bestAttempt ? bestAttempt.series : [],
+    bestLengths,
   }
 }
