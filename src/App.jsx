@@ -9,8 +9,8 @@ import './App.css'
 import { createT, getLocaleFromQuery, getLocaleHref } from './i18n'
 import githubMark from './assets/github-mark-white.svg'
 
-const versionCode = "v0.0.1.1222.7";
-const underDev = true;
+const versionCode = "v1.0.0";
+const underDev = false;
 
 const isDevMode = false;
 const maxStepNumber = isDevMode ? 50 : 30;
