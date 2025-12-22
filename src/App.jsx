@@ -7,6 +7,7 @@ import { formatNum, toRad } from './lib/utils'
 import { runEllipseSearch } from './lib/search'
 import './App.css'
 import { createT, getLocaleFromQuery, getLocaleHref } from './i18n'
+import githubMark from './assets/github-mark-white.svg'
 
 const versionCode = "v0.0.1.1222.4";
 
@@ -47,6 +48,9 @@ function AppContent({ t, locale, localeLinks }) {
   const chordNum = parseFloat(chord)
   const chordSliderValue = Number.isFinite(chordNum) ? Math.min(chordNum, chordMax) : 0
   const toleranceSliderValue = Number.isFinite(toleranceNum) ? Math.min(toleranceNum, toleranceSliderMax) : 0
+  const readmeHref = locale === 'zh-tw'
+    ? 'https://github.com/davidhu3141/ArcApproxByEllipse/blob/main/README%20(zh-tw).md'
+    : 'https://github.com/davidhu3141/ArcApproxByEllipse/blob/main/README.md'
 
   const bestTarget = (() => {
     if (!bestAttempt) return null
@@ -151,121 +155,124 @@ function AppContent({ t, locale, localeLinks }) {
         </div>
       </header>
 
-      <section className="charts-grid">
-        <ArcViewportChart
-          title={t('app.charts.viewportTitle')}
-          height={320}
-          radius={radius}
-          thetaDeg={theta}
-          bestEllipse={bestAttempt}
-          layoutToggle={showAttemptsChart}
-        />
-        <ArchiAnimationChart
-          title={t('app.charts.animationTitle')}
-          height={320}
-          radius={radius}
-          thetaDeg={theta}
-          bestEllipse={bestAttempt}
-          bestLengths={bestLengths}
-          layoutToggle={showAttemptsChart}
-        />
-      </section>
-
-      <section className="panel">
-        <div className="panel__head">
-          <div>
-            <h2>{t('app.basicSettingsTitle')}</h2>
+      <div className="intro-layout">
+        <section className="intro-layout__viewport">
+          <ArcViewportChart
+            title={t('app.charts.viewportTitle')}
+            height={320}
+            radius={radius}
+            thetaDeg={theta}
+            bestEllipse={bestAttempt}
+            layoutToggle={showAttemptsChart}
+          />
+        </section>
+        <section className="panel intro-layout__basic">
+          <div className="panel__head">
+            <div>
+              <h2>{t('app.basicSettingsTitle')}</h2>
+            </div>
+            <p className="helper-text">
+              {t('app.basicSettingsHelper')}
+            </p>
           </div>
-          <p className="helper-text">
-            {t('app.basicSettingsHelper')}
-          </p>
-        </div>
-        <div className="input-grid">
-          <label className="field">
-            <span>{t('app.fieldRadius')}</span>
-            <div className="field__controls">
-              <input
-                type="range"
-                min="0"
-                max={radiusSliderMax}
-                step="1"
-                value={radiusSliderValue}
-                onChange={(e) => handleRadiusChange(e.target.value)}
-              />
-              <input
-                type="number"
-                min="0"
-                value={radius}
-                onChange={(e) => handleRadiusChange(e.target.value)}
-                placeholder={t('app.placeholderRadius')}
-              />
-            </div>
-          </label>
-          <label className="field">
-            <span>{t('app.fieldTheta')}</span>
-            <div className="field__controls">
-              <input
-                type="range"
-                min="0"
-                max="180"
-                step="0.1"
-                value={thetaSliderValue}
-                onChange={(e) => handleThetaChange(e.target.value)}
-              />
-              <input
-                type="number"
-                value={theta}
-                min="0"
-                max="180"
-                onChange={(e) => handleThetaChange(e.target.value)}
-                placeholder={t('app.placeholderTheta')}
-              />
-            </div>
-          </label>
-          <label className="field">
-            <span>{t('app.fieldChord')}</span>
-            <div className="field__controls">
-              <input
-                type="range"
-                min="0"
-                max={chordMax}
-                step="0.1"
-                value={chordSliderValue}
-                onChange={(e) => handleChordChange(e.target.value)}
-              />
-              <input
-                type="number"
-                min="0"
-                max={radius !== '' && Number.isFinite(parseFloat(radius)) ? 2 * parseFloat(radius) : undefined}
-                value={chord}
-                onChange={(e) => handleChordChange(e.target.value)}
-                placeholder={t('app.placeholderChord')}
-              />
-            </div>
-          </label>
-          <label className="field">
-            <span>{t('app.fieldTolerance')}</span>
-            <div className="field__controls">
-              <input
-                type="range"
-                min="0"
-                max={toleranceSliderMax}
-                step="0.01"
-                value={toleranceSliderValue}
-                onChange={(e) => setTolerance(e.target.value)}
-              />
-              <input
-                type="number"
-                min="0"
-                step="0.01"
-                value={tolerance}
-                onChange={(e) => setTolerance(e.target.value)}
-                placeholder={t('app.placeholderTolerance')}
-              />
-            </div>
-          </label>
-        </div>
-      </section>
+          <div className="input-grid">
+            <label className="field">
+              <span>{t('app.fieldRadius')}</span>
+              <div className="field__controls">
+                <input
+                  type="range"
+                  min="0"
+                  max={radiusSliderMax}
+                  step="1"
+                  value={radiusSliderValue}
+                  onChange={(e) => handleRadiusChange(e.target.value)}
+                />
+                <input
+                  type="number"
+                  min="0"
+                  value={radius}
+                  onChange={(e) => handleRadiusChange(e.target.value)}
+                  placeholder={t('app.placeholderRadius')}
+                />
+              </div>
+            </label>
+            <label className="field">
+              <span>{t('app.fieldTheta')}</span>
+              <div className="field__controls">
+                <input
+                  type="range"
+                  min="0"
+                  max="180"
+                  step="0.1"
+                  value={thetaSliderValue}
+                  onChange={(e) => handleThetaChange(e.target.value)}
+                />
+                <input
+                  type="number"
+                  value={theta}
+                  min="0"
+                  max="180"
+                  onChange={(e) => handleThetaChange(e.target.value)}
+                  placeholder={t('app.placeholderTheta')}
+                />
+              </div>
+            </label>
+            <label className="field">
+              <span>{t('app.fieldChord')}</span>
+              <div className="field__controls">
+                <input
+                  type="range"
+                  min="0"
+                  max={chordMax}
+                  step="0.1"
+                  value={chordSliderValue}
+                  onChange={(e) => handleChordChange(e.target.value)}
+                />
+                <input
+                  type="number"
+                  min="0"
+                  max={radius !== '' && Number.isFinite(parseFloat(radius)) ? 2 * parseFloat(radius) : undefined}
+                  value={chord}
+                  onChange={(e) => handleChordChange(e.target.value)}
+                  placeholder={t('app.placeholderChord')}
+                />
+              </div>
+            </label>
+            <label className="field">
+              <span>{t('app.fieldTolerance')}</span>
+              <div className="field__controls">
+                <input
+                  type="range"
+                  min="0"
+                  max={toleranceSliderMax}
+                  step="0.01"
+                  value={toleranceSliderValue}
+                  onChange={(e) => setTolerance(e.target.value)}
+                />
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={tolerance}
+                  onChange={(e) => setTolerance(e.target.value)}
+                  placeholder={t('app.placeholderTolerance')}
+                />
+              </div>
+            </label>
+          </div>
+        </section>
+        <section className="intro-layout__animation">
+          <ArchiAnimationChart
+            title={t('app.charts.animationTitle')}
+            height={320}
+            radius={radius}
+            thetaDeg={theta}
+            bestEllipse={bestAttempt}
+            bestLengths={bestLengths}
+            layoutToggle={showAttemptsChart}
+          />
+        </section>
+      </div>
 
       <section className="panel">
         <div className="panel__head">
@@ -352,6 +359,9 @@ function AppContent({ t, locale, localeLinks }) {
           <>
             <p className="helper-text">
               {t('app.advancedHelper')}
+            </p>
+            <p className="helper-text helper-text--warning">
+              {t('app.advancedWarning')}
             </p>
             <div className="input-grid">
               <label className="field">
@@ -446,6 +456,23 @@ function AppContent({ t, locale, localeLinks }) {
             </div>
           </>
         )}
+      </section>
+
+      <section className="panel">
+        <div className="panel__head">
+          <div>
+            <h2>{t('app.readmeTitle')}</h2>
+          </div>
+        </div>
+        <p className="helper-text">
+          {t('app.readmeHelper')}
+        </p>
+        <div className="panel__actions">
+          <a className="readme-link" href={readmeHref} target="_blank" rel="noreferrer">
+            <img src={githubMark} alt="GitHub" />
+            {readmeHref}
+          </a>
+        </div>
       </section>
     </div>
   )
