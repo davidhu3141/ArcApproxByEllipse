@@ -271,17 +271,6 @@ function AppContent({ t, locale, localeLinks }) {
             </p>
             <div className="input-grid">
               <label className="field">
-                <span>{t('app.minimizeByLabel')}</span>
-                <select
-                  value={minimizeBy}
-                  onChange={(e) => setMinimizeBy(e.target.value)}
-                >
-                  <option value="a">{t('app.minimizeByA')}</option>
-                  <option value="sum">{t('app.minimizeBySum')}</option>
-                  <option value="l1l3">{t('app.minimizeByL1L3')}</option>
-                </select>
-              </label>
-              <label className="field">
                 <span>{t('app.offsetP')}</span>
                 <input
                   type="number"
@@ -358,6 +347,17 @@ function AppContent({ t, locale, localeLinks }) {
                   onChange={(e) => setForceZeroD2(e.target.checked)}
                 />
                 <span>{t('app.disableR')}</span>
+              </label>
+              <label className="field">
+                <span>{t('app.minimizeByLabel')}</span>
+                <select
+                  value={minimizeBy}
+                  onChange={(e) => setMinimizeBy(e.target.value)}
+                >
+                  <option value="a">{t('app.minimizeByA')}</option>
+                  <option value="sum">{t('app.minimizeBySum')}</option>
+                  <option value="l1l3">{t('app.minimizeByL1L3')}</option>
+                </select>
               </label>
             </div>
           </>

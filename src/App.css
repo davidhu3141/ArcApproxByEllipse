@@ -230,6 +230,11 @@ h3 {
   font-size: 15px;
 }
 
+.field select option {
+  background: #0f1a2c;
+  color: #e9efff;
+}
+
 .checkbox-field {
   flex-direction: row;
   align-items: center;
