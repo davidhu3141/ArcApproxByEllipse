@@ -27,6 +27,7 @@ function AppContent({ t, locale, localeLinks }) {
   const [offsetStepsD2, setOffsetStepsD2] = useState('10')
   const [tsSteps, setTsSteps] = useState('20')
   const [skipWorse, setSkipWorse] = useState(true)
+  const [minimizeBy, setMinimizeBy] = useState('a')
   const [forceZeroD1, setForceZeroD1] = useState(true)
   const [forceZeroD2, setForceZeroD2] = useState(true)
   const [showAttemptsChart, setShowAttemptsChart] = useState(isDevMode)
@@ -84,11 +85,12 @@ function AppContent({ t, locale, localeLinks }) {
       constrainD1ForceZero: forceZeroD1,
       constrainD2ForceZero: forceZeroD2,
       maxStepNumber,
+      minimizeBy,
     })
     setAttempts(a)
     setBestAttempt(best)
     setErrorSeries(es)
-  }, [radius, theta, tolerance, offsetStepsD, offsetStepsD1, offsetStepsD2, tsSteps, skipWorse, forceZeroD1, forceZeroD2])
+  }, [radius, theta, tolerance, offsetStepsD, offsetStepsD1, offsetStepsD2, tsSteps, skipWorse, forceZeroD1, forceZeroD2, minimizeBy])
 
   useEffect(() => {
     runSearch()
@@ -268,6 +270,17 @@ function AppContent({ t, locale, localeLinks }) {
               {t('app.advancedHelper')}
             </p>
             <div className="input-grid">
+              <label className="field">
+                <span>{t('app.minimizeByLabel')}</span>
+                <select
+                  value={minimizeBy}
+                  onChange={(e) => setMinimizeBy(e.target.value)}
+                >
+                  <option value="a">{t('app.minimizeByA')}</option>
+                  <option value="sum">{t('app.minimizeBySum')}</option>
+                  <option value="l1l3">{t('app.minimizeByL1L3')}</option>
+                </select>
+              </label>
               <label className="field">
                 <span>{t('app.offsetP')}</span>
                 <input

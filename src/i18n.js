@@ -37,6 +37,10 @@ const MESSAGES = {
       collapse: 'Collapse',
       advancedHelper:
         'Control sampling steps for P (midpoint), Q (right quarter), and R (right endpoint) plus arc sampling steps (ts). If the resulting ellipse is larger than the current smallest, you can skip error checks. You can also force P/R to stay on the arc.',
+      minimizeByLabel: 'Optimization target (usually does not affect results)',
+      minimizeByA: 'Minimize a',
+      minimizeBySum: 'Minimize a + b',
+      minimizeByL1L3: 'Minimize L1 + L3',
       offsetP: 'P sampling steps',
       offsetQ: 'Q sampling steps',
       offsetR: 'R sampling steps',
@@ -85,6 +89,10 @@ const MESSAGES = {
       collapse: '收合',
       advancedHelper:
         '控制橢圓弧上三點 P (中點), Q (右邊 1/4 處), R (右端點) 的取樣步數與弧長取樣步數 (ts)。三點決定出的橢圓比目前最小者還大時可跳過誤差值驗證。可強制 P/R 在圓弧上。',
+      minimizeByLabel: '搜尋目標 (通常不會影響結果)',
+      minimizeByA: 'a 最小',
+      minimizeBySum: 'a + b 最小',
+      minimizeByL1L3: 'L1 + L3 最小',
       offsetP: 'P 點取樣步數',
       offsetQ: 'Q 點取樣步數',
       offsetR: 'R 點取樣步數',
