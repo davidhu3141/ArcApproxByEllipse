@@ -30,41 +30,73 @@ function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, layoutToggle, 
       const padding = 36
       const thetaRad = valid ? thetaHalfRad : 0.5
       const arcWidth = valid ? 2 * r * Math.sin(thetaRad) : 2
-      const arcHeight = valid ? r - r * Math.cos(thetaRad) : 1
       const xMinRaw = -arcWidth / 2
       const xMaxRaw = arcWidth / 2
       const yMinRaw = valid ? r * Math.cos(thetaRad) : -1
       const yMaxRaw = valid ? r : 1
 
-      const marginW = Math.max(arcWidth || 0, Math.abs(xMinRaw) + Math.abs(xMaxRaw), 1)
-      const marginH = Math.max(arcHeight || 0, Math.abs(yMaxRaw - yMinRaw), 1)
-      const xMin = xMinRaw - marginW / 3
-      const xMax = xMaxRaw + marginW / 3
-      const yMin = yMinRaw - marginH
-      const yMax = yMaxRaw + marginH / 2
+      let xMin = xMinRaw
+      let xMax = xMaxRaw
+      let yMin = yMinRaw
+      let yMax = yMaxRaw
 
-      const widthRange = xMax - xMin
-      const heightRange = yMax - yMin
-      const size = Math.max(widthRange, heightRange)
+      if (
+        bestEllipse &&
+        Number.isFinite(bestEllipse.a) &&
+        Number.isFinite(bestEllipse.b) &&
+        Number.isFinite(bestEllipse.h)
+      ) {
+        xMin = -bestEllipse.a
+        xMax = bestEllipse.a
+        yMin = bestEllipse.h - bestEllipse.b
+        yMax = bestEllipse.h + bestEllipse.b
+      }
+
+      const baseRangeX = xMax - xMin
+      const baseRangeY = yMax - yMin
+      const pad = Math.max(baseRangeX, baseRangeY) * 0.15
+      xMin -= pad
+      xMax += pad
+      yMin -= pad
+      yMax += pad
+
+      const rangeX = xMax - xMin
+      const rangeY = yMax - yMin
+      const size = Math.max(rangeX, rangeY)
       const centerX = (xMin + xMax) / 2
       const centerY = (yMin + yMax) / 2
-
       const innerW = width - padding * 2
       const innerH = height - padding * 2
-      const pxSize = Math.min(innerW, innerH)
-      const scale = pxSize / size
-      const halfPx = (size * scale) / 2
-
+      const side = Math.min(innerW, innerH)
       const cx = width / 2
       const cy = height / 2
+
+      const extendX = innerW / side
+      const extendY = innerH / side
+
       const xScale = d3
         .scaleLinear()
-        .domain([centerX - size / 2, centerX + size / 2])
-        .range([cx - halfPx, cx + halfPx])
+        .domain([
+          centerX - size / 2 * extendX,
+          centerX + size / 2 * extendX
+        ])
+        .range([
+          cx - side / 2 * extendX,
+          cx + side / 2 * extendX
+        ])
+
       const yScale = d3
         .scaleLinear()
-        .domain([centerY - size / 2, centerY + size / 2])
-        .range([cy + halfPx, cy - halfPx])
+        .domain([
+          centerY - size / 2 * extendY,
+          centerY + size / 2 * extendY
+        ])
+        .range([
+          cy + side / 2 * extendY,
+          cy - side / 2 * extendY
+        ])
+
+      const scale = (x) => Math.abs(xScale(x) - xScale(0))
 
       svg
         .append('g')
@@ -91,7 +123,7 @@ function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, layoutToggle, 
           .attr('class', 'arc-path')
           .attr('cx', xScale(0))
           .attr('cy', yScale(0))
-          .attr('r', r * scale)
+          .attr('r', scale(r))
 
         const endpointsGroup = svg.append('g').attr('class', 'arc-endpoints')
           ;[startPt, endPt].forEach((pt, idx) => {
@@ -101,13 +133,6 @@ function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, layoutToggle, 
               .attr('cx', xScale(pt.x))
               .attr('cy', yScale(pt.y))
               .attr('r', 5)
-            endpointsGroup
-              .append('text')
-              .attr('x', xScale(pt.x))
-              .attr('y', yScale(pt.y) - 10)
-              .attr('class', 'chart-note')
-              .attr('text-anchor', 'middle')
-              .text(idx === 0 ? 'start' : 'end')
           })
       } else {
         svg

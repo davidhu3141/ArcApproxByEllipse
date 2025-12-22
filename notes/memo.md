@@ -28,4 +28,4 @@ todo: code review script and refine
     - 完成的動畫
 - 文件
 
-
+手機版跟電腦版切換時 圖表尺度怪怪

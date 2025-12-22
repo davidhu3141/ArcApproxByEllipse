@@ -132,21 +132,6 @@ function AppContent({ t, locale, localeLinks }) {
           bestEllipse={bestAttempt}
           layoutToggle={showAttemptsChart}
         />
-        <ErrorChart
-          title={t('app.charts.errorTitle')}
-          height={260}
-          series={errorSeries}
-          tolerance={parseFloat(tolerance) || 0}
-          layoutToggle={showAttemptsChart}
-        />
-        {showAttemptsChart && (
-          <AttemptsChart
-            title={t('app.charts.attemptsTitle')}
-            height={260}
-            attempts={attempts}
-            best={bestAttempt}
-          />
-        )}
       </section>
 
       <section className="panel">
@@ -236,6 +221,24 @@ function AppContent({ t, locale, localeLinks }) {
           </div>
         ) : (
           <p className="helper-text">{t('app.noBest')}</p>
+        )}
+      </section>
+
+      <section className="charts-grid">
+        <ErrorChart
+          title={t('app.charts.errorTitle')}
+          height={260}
+          series={errorSeries}
+          tolerance={parseFloat(tolerance) || 0}
+          layoutToggle={showAttemptsChart}
+        />
+        {showAttemptsChart && (
+          <AttemptsChart
+            title={t('app.charts.attemptsTitle')}
+            height={260}
+            attempts={attempts}
+            best={bestAttempt}
+          />
         )}
       </section>
 

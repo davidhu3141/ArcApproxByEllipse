@@ -58,7 +58,7 @@ const MESSAGES = {
       langZhTw: '繁中',
       charts: {
         viewportTitle: '圓與橢圓',
-        errorTitle: '誤差 vs 角度',
+        errorTitle: '各角度誤差',
         attemptsTitle: '已嘗試的橢圓半軸',
       },
       basicSettingsTitle: '基本設定',
