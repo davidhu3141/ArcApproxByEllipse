@@ -5,13 +5,14 @@ import AttemptsChart from './components/AttemptsChart'
 import { formatNum, toRad } from './lib/utils'
 import { runEllipseSearch } from './lib/search'
 import './App.css'
+import { createT, getLocaleFromPath, getLocaleHref } from './i18n'
 
 const versionCode = "v0.0.1.xxxx.x";
 
 const isDevMode = false;
 const maxStepNumber = isDevMode ? 50 : 30;
 
-function App() {
+function AppContent({ t, locale, localeLinks }) {
   const [radius, setRadius] = useState('700')
   const [theta, setTheta] = useState('20')
   const [chord, setChord] = useState(() => {
@@ -96,20 +97,35 @@ function App() {
     <div className="page">
       <header className="hero">
         <div className="hero__text">
-          <h1>Arc to Ellipse Exploration</h1>
+          <h1>{t('app.heroTitle')}</h1>
           <p className="lede">
-            Inputs, visualization frame, and D3 canvases wired to req2/req3 sampling. Layout is responsive for quick iteration.
+            {t('app.heroLede')}
           </p>
           <div className="hero__meta">
             <span className="pill">{versionCode}</span>
-            <span className="pill">Under development</span>
+            <span className="pill">{t('app.status')}</span>
+            <div className="lang-switch">
+              <span className="lang-label">{t('app.langSwitch')}</span>
+              <a
+                className={`lang-btn${locale === 'en' ? ' is-active' : ''}`}
+                href={localeLinks.en}
+              >
+                {t('app.langEn')}
+              </a>
+              <a
+                className={`lang-btn${locale === 'zh-tw' ? ' is-active' : ''}`}
+                href={localeLinks['zh-tw']}
+              >
+                {t('app.langZhTw')}
+              </a>
+            </div>
           </div>
         </div>
       </header>
 
       <section className="charts-grid">
         <ArcViewportChart
-          title="Plane view with circle / endpoints / ellipse"
+          title={t('app.charts.viewportTitle')}
           height={320}
           radius={radius}
           thetaDeg={theta}
@@ -117,7 +133,7 @@ function App() {
           layoutToggle={showAttemptsChart}
         />
         <ErrorChart
-          title="Error vs angle"
+          title={t('app.charts.errorTitle')}
           height={260}
           series={errorSeries}
           tolerance={parseFloat(tolerance) || 0}
@@ -125,7 +141,7 @@ function App() {
         />
         {showAttemptsChart && (
           <AttemptsChart
-            title="Tried ellipse semi-axes"
+            title={t('app.charts.attemptsTitle')}
             height={260}
             attempts={attempts}
             best={bestAttempt}
@@ -136,60 +152,60 @@ function App() {
       <section className="panel">
         <div className="panel__head">
           <div>
-            <h2>Basic settings</h2>
+            <h2>{t('app.basicSettingsTitle')}</h2>
           </div>
           <p className="helper-text">
-            theta and chord sync each other; radius changes recompute chord. theta is the total span (90−theta/2 ~ 90+theta/2).
+            {t('app.basicSettingsHelper')}
           </p>
         </div>
         <div className="input-grid">
           <label className="field">
-            <span>Radius (R)</span>
+            <span>{t('app.fieldRadius')}</span>
             <input
               type="number"
               min="0"
               value={radius}
               onChange={(e) => handleRadiusChange(e.target.value)}
-              placeholder="e.g. 700"
+              placeholder={t('app.placeholderRadius')}
             />
           </label>
           <label className="field">
-            <span>Theta (deg)</span>
+            <span>{t('app.fieldTheta')}</span>
             <input
               type="number"
               value={theta}
               min="0"
               max="180"
               onChange={(e) => handleThetaChange(e.target.value)}
-              placeholder="e.g. 20"
+              placeholder={t('app.placeholderTheta')}
             />
           </label>
           <label className="field">
-            <span>Chord length</span>
+            <span>{t('app.fieldChord')}</span>
             <input
               type="number"
               min="0"
               max={radius !== '' && Number.isFinite(parseFloat(radius)) ? 2 * parseFloat(radius) : undefined}
               value={chord}
               onChange={(e) => handleChordChange(e.target.value)}
-              placeholder="e.g. 243"
+              placeholder={t('app.placeholderChord')}
             />
           </label>
           <label className="field">
-            <span>Tolerance e</span>
+            <span>{t('app.fieldTolerance')}</span>
             <input
               type="number"
               min="0"
               step="0.01"
               value={tolerance}
               onChange={(e) => setTolerance(e.target.value)}
-              placeholder="e.g. 0.1"
+              placeholder={t('app.placeholderTolerance')}
             />
           </label>
         </div>
         <div className="panel__foot">
           <p>
-            Each change tries 10×10×10 random (d,d1,d2) in (-e,e); keeps err &lt;= e with minimal a+b, and plots its error curve and ellipse.
+            {t('app.basicFoot')}
           </p>
         </div>
       </section>
@@ -197,56 +213,56 @@ function App() {
       <section className="panel">
         <div className="panel__head">
           <div>
-            <h2>Current best ellipse</h2>
+            <h2>{t('app.currentBestTitle')}</h2>
           </div>
         </div>
         {bestAttempt ? (
           <div className="best-grid">
             <div className="stat">
-              <p className="stat-label">a</p>
+              <p className="stat-label">{t('app.statA')}</p>
               <p className="stat-value">{formatNum(bestAttempt.a, 4)}</p>
             </div>
             <div className="stat">
-              <p className="stat-label">b</p>
+              <p className="stat-label">{t('app.statB')}</p>
               <p className="stat-value">{formatNum(bestAttempt.b, 4)}</p>
             </div>
             <div className="stat">
-              <p className="stat-label">h (center y)</p>
+              <p className="stat-label">{t('app.statH')}</p>
               <p className="stat-value">{formatNum(bestAttempt.h, 4)}</p>
             </div>
             <div className="stat">
-              <p className="stat-label">max err</p>
+              <p className="stat-label">{t('app.statErr')}</p>
               <p className="stat-value">{formatNum(bestAttempt.err, 6)}</p>
             </div>
             <div className="stat">
-              <p className="stat-label">a + b</p>
+              <p className="stat-label">{t('app.statSum')}</p>
               <p className="stat-value">{formatNum(bestAttempt.a + bestAttempt.b, 4)}</p>
             </div>
           </div>
         ) : (
-          <p className="helper-text">No passing ellipse yet.</p>
+          <p className="helper-text">{t('app.noBest')}</p>
         )}
       </section>
 
       <section className="panel">
         <div className="panel__head">
           <div>
-            <h2>Search settings</h2>
+            <h2>{t('app.searchSettingsTitle')}</h2>
           </div>
           <div className="panel__actions">
             <button className="link-btn" type="button" onClick={() => setShowAdvanced((v) => !v)}>
-              {showAdvanced ? 'Collapse' : 'Expand'}
+              {showAdvanced ? t('app.collapse') : t('app.expand')}
             </button>
           </div>
         </div>
         {showAdvanced && (
           <>
             <p className="helper-text">
-              Control sampling steps for offsets (d, d1, d2) and arc sampling (ts). Optionally skip attempts whose a+b is already worse than the best pass, force d1/d2 to 0, or show the attempts scatter plot.
+              {t('app.advancedHelper')}
             </p>
             <div className="input-grid">
               <label className="field">
-                <span>Offset steps for P</span>
+                <span>{t('app.offsetP')}</span>
                 <input
                   type="number"
                   min="2"
@@ -258,7 +274,7 @@ function App() {
                 />
               </label>
               <label className="field">
-                <span>Offset steps for Q</span>
+                <span>{t('app.offsetQ')}</span>
                 <input
                   type="number"
                   min="2"
@@ -269,7 +285,7 @@ function App() {
                 />
               </label>
               <label className="field">
-                <span>Offset steps for R</span>
+                <span>{t('app.offsetR')}</span>
                 <input
                   type="number"
                   min="2"
@@ -281,7 +297,7 @@ function App() {
                 />
               </label>
               <label className="field">
-                <span>Arc sample steps (ts)</span>
+                <span>{t('app.arcSample')}</span>
                 <input
                   type="number"
                   min="4"
@@ -297,7 +313,7 @@ function App() {
                   checked={skipWorse}
                   onChange={(e) => setSkipWorse(e.target.checked)}
                 />
-                <span>Skip when 'a' is already better than current attempt</span>
+                <span>{t('app.skipWorse')}</span>
               </label>
               <label className="field checkbox-field">
                 <input
@@ -305,7 +321,7 @@ function App() {
                   checked={showAttemptsChart}
                   onChange={(e) => setShowAttemptsChart(e.target.checked)}
                 />
-                <span>Show "Tried ellipse semi-axes" chart</span>
+                <span>{t('app.showAttempts')}</span>
               </label>
               <label className="field checkbox-field">
                 <input
@@ -313,7 +329,7 @@ function App() {
                   checked={forceZeroD1}
                   onChange={(e) => setForceZeroD1(e.target.checked)}
                 />
-                <span>Disable P sampling</span>
+                <span>{t('app.disableP')}</span>
               </label>
               <label className="field checkbox-field">
                 <input
@@ -321,7 +337,7 @@ function App() {
                   checked={forceZeroD2}
                   onChange={(e) => setForceZeroD2(e.target.checked)}
                 />
-                <span>Disable R sampling</span>
+                <span>{t('app.disableR')}</span>
               </label>
             </div>
           </>
@@ -329,6 +345,20 @@ function App() {
       </section>
     </div>
   )
+}
+
+function App() {
+  const pathname =
+    typeof window !== 'undefined' ? window.location.pathname : '/'
+  const locale = getLocaleFromPath(pathname)
+  const t = createT(locale)
+  const baseUrl = typeof import.meta !== 'undefined' ? import.meta.env.BASE_URL : '/'
+  const localeLinks = {
+    en: getLocaleHref(baseUrl, 'en'),
+    'zh-tw': getLocaleHref(baseUrl, 'zh-tw'),
+  }
+
+  return <AppContent t={t} locale={locale} localeLinks={localeLinks} />
 }
 
 export default App
