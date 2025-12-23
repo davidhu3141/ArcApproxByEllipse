@@ -6,7 +6,7 @@ README.md
 
 這個專案的目的是找出一些較小的橢圓，用該橢圓的一段弧長（橢圓弧）來代替半徑很大但弦長不大的圓弧。
 
-<!-- pic, site gif -->
+![](doc_assets/arcToolUse.gif)
 
 使用看看：https://davidhu3141.github.io/ArcApproxByEllipse/?lang=zh-tw
 
