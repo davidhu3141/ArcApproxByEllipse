@@ -96,11 +96,12 @@ function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, layoutToggle, 
           cy - side / 2 * extendY
         ])
 
-      const scale = (x) => Math.abs(xScale(x) - xScale(0))
+      const scale = (x) => Math.abs(xScale(x) - xScale(0));
+      const yAxisHasZero = centerY - size / 2 * extendY < 0;
 
       svg
         .append('g')
-        .attr('transform', `translate(0, ${height - padding})`)
+        .attr('transform', `translate(0, ${yAxisHasZero ? yScale(0) : height - padding})`)
         .call(d3.axisBottom(xScale).ticks(6))
         .call((g) => g.selectAll('text').attr('class', 'axis-tick'))
         .call((g) => g.selectAll('path,line').attr('class', 'axis-line'))

@@ -13,7 +13,7 @@ const versionCode = "v1.0.1";
 const underDev = false;
 
 const isDevMode = false;
-const maxStepNumber = isDevMode ? 50 : 30;
+const maxStepNumber = isDevMode ? 250 : 30;
 
 function AppContent({ t, locale, localeLinks }) {
   const [radius, setRadius] = useState('700')
@@ -29,7 +29,7 @@ function AppContent({ t, locale, localeLinks }) {
   const [offsetStepsD2, setOffsetStepsD2] = useState('10')
   const [tsSteps, setTsSteps] = useState('20')
   const [skipWorse, setSkipWorse] = useState(true)
-  const [minimizeBy, setMinimizeBy] = useState('a')
+  const [minimizeBy, setMinimizeBy] = useState('minab')
   const [forceZeroD1, setForceZeroD1] = useState(true)
   const [forceZeroD2, setForceZeroD2] = useState(true)
   const [showAttemptsChart, setShowAttemptsChart] = useState(isDevMode)
@@ -57,6 +57,9 @@ function AppContent({ t, locale, localeLinks }) {
     if (!bestAttempt) return null
     if (minimizeBy === 'sum') {
       return { label: t('app.statTargetSum'), value: bestAttempt.a + bestAttempt.b }
+    }
+    if (minimizeBy === 'minab') {
+      return { label: t('app.statTargetMinAB'), value: Math.min(bestAttempt.a, bestAttempt.b) }
     }
     if (minimizeBy === 'l1l3') {
       if (!bestLengths) return null
@@ -454,6 +457,7 @@ function AppContent({ t, locale, localeLinks }) {
                   value={minimizeBy}
                   onChange={(e) => setMinimizeBy(e.target.value)}
                 >
+                  <option value="minab">{t('app.minimizeByMinAB')}</option>
                   <option value="a">{t('app.minimizeByA')}</option>
                   <option value="sum">{t('app.minimizeBySum')}</option>
                   <option value="l1l3">{t('app.minimizeByL1L3')}</option>
