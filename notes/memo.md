@@ -40,3 +40,9 @@ toler 太大導致 Q sample 跨距太大，才會看起來怪
 negative t0 不符合模擬情境, 一個 circle theta 有兩個 ellip 點
 
 changelog?
+
+case2 過濾沒算在灰點
+
+手機隨便按到滑桿會跑掉
+
+L3 如果是圓形更好嗎
