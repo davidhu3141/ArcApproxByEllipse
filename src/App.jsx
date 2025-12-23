@@ -13,7 +13,7 @@ const versionCode = "v1.0.0";
 const underDev = false;
 
 const isDevMode = false;
-const maxStepNumber = isDevMode ? 50 : 30;
+const maxStepNumber = isDevMode ? 250 : 30;
 
 function AppContent({ t, locale, localeLinks }) {
   const [radius, setRadius] = useState('700')
