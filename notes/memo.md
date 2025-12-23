@@ -38,3 +38,5 @@ underdev 才有小版號
 
 toler 太大導致 Q sample 跨距太大，才會看起來怪
 negative t0 不符合模擬情境, 一個 circle theta 有兩個 ellip 點
+
+changelog?
