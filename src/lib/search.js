@@ -57,7 +57,7 @@ export function runEllipseSearch({
   constrainD1ForceZero = false,
   constrainD2ForceZero = false,
   maxStepNumber = 30,
-  minimizeBy = 'a',
+  minimizeBy = 'minab',
 }) {
   const r = Number(radius)
   const tDeg = Number(thetaDeg)
@@ -92,6 +92,7 @@ export function runEllipseSearch({
   let attemptId = 0
   const metricFor = (a, b, h) => {
     if (minimizeBy === 'sum') return a + b
+    if (minimizeBy === 'minab') return Math.min(a, b)
     if (minimizeBy === 'l1l3') return Math.abs(h - chordMidY) + Math.abs(a - b)
     return a
   }
