@@ -123,9 +123,10 @@ export function runEllipseSearch({
           const ratio = ((r + d2) * Math.cos(Math.PI / 2 - half)) / a
           if (Math.abs(ratio) > 1) continue
 
-          const t0 = Math.acos(ratio)
+          const t0Sign = r * Math.sin(Math.PI / 2 - half) - h
+          const t0 = Math.acos(ratio) * Math.sign(t0Sign)
           const t1 = Math.PI - t0
-          if (!(t0 < Math.PI / 2 && t1 > t0)) continue
+          if (!(t0 < Math.PI / 2 && t1 > t0)) continue // nouse? 
 
           const steps = clampTs
           const ts = d3.range(steps).map((idx) => t0 + ((Math.PI / 2 - t0) * idx) / (steps - 1))
@@ -142,6 +143,7 @@ export function runEllipseSearch({
             a,
             b,
             h,
+            t0,
             err: maxErr,
             accepted: maxErr <= e,
             series,
@@ -159,19 +161,24 @@ export function runEllipseSearch({
 
   const bestAttempt = attemptsList
     .filter((a) => a.accepted)
-    .sort((a, b) => metricFor(a.a, a.b, a.h) - metricFor(b.a, b.b, b.h))[0] || null
+    .reduce((best, current) => {
+      if (!best) return current
+      return metricFor(current.a, current.b, current.h) < metricFor(best.a, best.b, best.h)
+        ? current
+        : best
+    }, null)
 
   const bestLengths = bestAttempt
     ? (() => {
       const chordMidY = r * Math.cos(half)
       const chordRightX = r * Math.sin(half)
-      const { a, b, h } = bestAttempt
+      const { a, b, h, t0 } = bestAttempt
+      // 真的有必要判斷嗎
       if (!Number.isFinite(a) || !Number.isFinite(b) || !Number.isFinite(h) || a === 0) return null
-      const ratio = Math.max(-1, Math.min(1, chordRightX / a))
-      const t0 = Math.acos(ratio)
       const l1 = Math.abs(h - chordMidY)
       const l3 = Math.abs(a - b)
       const l2 = Math.abs(l3 * Math.cos(t0))
+      console.log(t0)
       return { l1, l2, l3 }
     })()
     : null

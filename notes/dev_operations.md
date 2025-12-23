@@ -13,6 +13,7 @@ commit types:
 
 - feat (develop)
 - doc (develop)
+- note (develop) (future)
 - publish (main)
 - "Update site" (gh-pages)
 
