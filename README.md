@@ -109,7 +109,7 @@ This can be expanded to $x^2+Ay^2+By+C=0$. It is easy to convert between the two
 
 Since we have three unknowns, we need three non-collinear points to determine the ellipse.
 
-Once we fix three points on the ellipse, substitute them into $x^2+Ay^2+By+C=0$ to get a linear system for A, B, C, then convert to a, b, h. It is possible for the solution to become a hyperbola instead (if B < 0).
+Once we fix three points on the ellipse, substitute them into $x^2+Ay^2+By+C=0$ to get a linear system for A, B, C. Solve for A, B, C and then convert to a, b, h. It is possible for the solution to become a hyperbola instead (if B < 0).
 
 ![](doc_assets/inkscape_331z8118fu.png)
 
@@ -124,25 +124,6 @@ P, Q, R can each have a radial error (d1, d, d2). By default P and R sampling ar
 In general, increasing tolerance should allow a smaller ellipse. But if the tolerance is set too large (e.g. greater than 10% of the radius), the offset step size also grows, and most sampled ellipses get filtered by case 2, so the search may fail to find an ellipse smaller than the circle. Case 2 is illustrated below:
 
 ![](doc_assets/inkscape_8vuHz9RDAB.png)
-
-
-
-Results
--------
-
-If we allow an error tolerance of $0.5$ cm, the program reports the following:
-
-- The arc can be approximated with an ellipse whose semi-major axis is `a = 185.4 cm` and semi-minor axis is `b = 43.0 cm`.
-- The trammel would sweep a triangular area of dimensions roughly `base x height = 250 cm (the chord) x 185.4 cm (a)`.
-    - A traditional compass would require `base x height = 250 cm (the chord) x 700 cm (the radius)`.
-
-<!-- pic -->
-
-These results assume zero error at the midpoint and endpoints of the arc, so the largest error appears near the ends. If we allow some error at the midpoint, we can reduce the required value of `a`.
-
-<!-- pic -->
-
-#### Observations
 
 
 
