@@ -9,6 +9,8 @@ The purpose of this project is to find small ellipses whose arcs can approximate
 
 Try it: https://davidhu3141.github.io/ArcApproxByEllipse/?lang=en
 
+This web tool supports mobile phones (RWD).
+
 
 
 Motivation

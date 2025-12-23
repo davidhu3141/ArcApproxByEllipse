@@ -10,6 +10,7 @@ README.md
 
 使用看看：https://davidhu3141.github.io/ArcApproxByEllipse/?lang=zh-tw
 
+本工具有針對手機瀏覽設計 (RWD)。
 
 
 動機
