@@ -9,7 +9,7 @@ import './App.css'
 import { createT, getLocaleFromQuery, getLocaleHref } from './i18n'
 import githubMark from './assets/github-mark-white.svg'
 
-const versionCode = "v1.0.2";
+const versionCode = "v1.0.3";
 const underDev = false;
 
 const isDevMode = false;
