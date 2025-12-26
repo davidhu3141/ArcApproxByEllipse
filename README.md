@@ -7,9 +7,9 @@ The purpose of this project is to find small ellipses whose arcs can approximate
 
 ![](doc_assets/arcToolUse.gif)
 
-Try it: https://davidhu3141.github.io/ArcApproxByEllipse/?lang=en
+Live demo: https://davidhu3141.github.io/ArcApproxByEllipse/?lang=en
 
-This web tool supports mobile phones (RWD).
+This project is mobile-friendly (responsive design).
 
 
 
@@ -20,7 +20,7 @@ A friend of mine wanted to cut a circular arc with radius `700 cm` and chord len
 
 I do not know whether this approach fits real woodworking needs or construction scenarios, but I think this project is still interesting because it explores relationships between ellipses and circles. It might even be useful for someone, so I decided to try it.
 
-An Archimedean ellipse trammel means that you drill two nails into a wooden rod (green line below), attach a pen at another point (black dot), and let the nails slide along two perpendicular grooves (red and blue dots). The pen will trace an ellipse. The ellipse semi-major/minor axes are just the distances from the pen to each nail.
+An Archimedean ellipse trammel is an ellipse drawing tool: drill two nails into a wooden rod (green line below), attach a pen at another point (black dot), and let the nails slide along two perpendicular grooves (red and blue dots). The pen will trace an ellipse. The ellipse semi-major/minor axes are just the distances from the pen to each nail.
 
 The figure below shows the case where the pen is between the two nails.
 
@@ -43,7 +43,7 @@ Consider a circular arc with radius R and central angle *theta*. You can enter e
 
 Then set a tolerance. This tool will find an ellipse close to the arc and as small as possible. The ellipse deviates slightly from the arc, but the error stays within the tolerance.
 
-![](doc_assets/inkscape_CQt9wvgW1E.png)
+![](doc_assets/inkscape_5eIzsUWtOL.png)
 
 A larger tolerance helps find smaller ellipses, but I do not recommend setting tolerance greater than 10% of the radius (e.g. R=700, tolerance=70), because it makes the tool consider unreasonable ellipses and can block reasonable candidates.
 
@@ -123,7 +123,7 @@ P, Q, R can each have a radial error (d1, d, d2). By default P and R sampling ar
 - case 2: skip if the ellipse center is higher than the chord (this happens when tolerance is unreasonably large; the ellipse then touches the chord at its lower edge)
 - case 3: skip if the error exceeds the tolerance (even if d1, d, d2 are within tolerance, the arc segment between P-Q or Q-R may exceed it)
 
-In general, increasing tolerance should allow a smaller ellipse. But if the tolerance is set too large (e.g. greater than 10% of the radius), the offset step size also grows, and most sampled ellipses get filtered by case 2, so the search may fail to find an ellipse smaller than the circle. Case 2 is illustrated below:
+In general, increasing tolerance should allow a smaller ellipse. But if the tolerance is set too large (e.g. greater than 10% of the radius), the offset step size also grows, and most sampled ellipses get filtered by case 2/3, so the search may fail to find an ellipse smaller than the circle. In these case you can increase the Q sampling steps (max=3000 if Disable P/R sampling enabled). Case 2 is illustrated below:
 
 ![](doc_assets/inkscape_8vuHz9RDAB.png)
 

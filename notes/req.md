@@ -86,18 +86,17 @@ req4
 req5
 ----
 
-加入一個進階設定的 section，用來設定 ds d1s d2s ts 這四項的 number of steps.
-ds d1s d2s 的 number of steps 範圍是 `2~50`, ts 的 number of steps 範圍是 `4~50`
-
-還要一個 checkbox 用來決定是不是 "如果發現 a+b 已經比現有的 pass 的最小 a+b 還大就要跳過"
+- 加入一個進階設定的 section，用來設定 ds d1s d2s ts 這四項的 number of steps.
+- ds d1s d2s 的 number of steps 範圍是 `2~50`, ts 的 number of steps 範圍是 `4~50`
+- 還要一個 checkbox 用來決定是不是 "如果發現 a+b 已經比現有的 pass 的最小 a+b 還大就要跳過"
 
 
 
 req6
 ----
 
-advanced setting 要可以收合。
-advanced setting 新增一個 checkbox 用來固定 endpoints。勾選時 d2 只能是 0.
+- advanced setting 要可以收合。
+- advanced setting 新增一個 checkbox 用來固定 endpoints。勾選時 d2 只能是 0.
 
 
 

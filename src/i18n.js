@@ -3,16 +3,16 @@ const MESSAGES = {
     app: {
       heroTitle: 'Approximate an Arc with an Ellipse',
       heroLede:
-        'After you enter arc parameters, the tool searches for an ellipse under the constraints and shows results in charts. The goal is to use a smaller ellipse to approximate a large-radius arc.',
+        'Enter arc parameters and the tool searches for an ellipse that meets the constraints, then visualizes the results. The goal is to approximate a large-radius arc with a smaller ellipse.',
       status: 'Under development',
       langSwitch: 'Language',
       langEn: 'EN',
       langZhTw: '繁中',
       charts: {
-        viewportTitle: 'Circle and ellipse',
-        animationTitle: 'Archimedes ellipse rig',
-        errorTitle: 'Error vs angle',
-        attemptsTitle: 'Tried ellipse semi-axes',
+        viewportTitle: 'Circle and Ellipse',
+        animationTitle: 'Archimedean Ellipse Trammel',
+        errorTitle: 'Error vs Angle',
+        attemptsTitle: 'Tried Ellipse Semi-Axes (a, b)',
       },
       basicSettingsTitle: 'Arc settings',
       basicSettingsHelper:
@@ -38,15 +38,15 @@ const MESSAGES = {
       statL2: 'L2',
       statL3: 'L3',
       bestNote:
-        'The definitions of L1, L2, and L3 are shown in the animation above; on the Archimedean ellipse trammel rod, the distances from the pen to the two nodes (shuttles/nails/sliders) are a and b.',
-      noBest: 'No passing ellipse yet.',
+        'L1, L2, and L3 are defined in the animation above. On the trammel rod, the distances from the pen to the two nodes (shuttles) are a and b.',
+      noBest: 'No valid ellipse yet.',
       searchSettingsTitle: 'Advanced search settings',
       expand: 'Expand',
       collapse: 'Collapse',
       advancedHelper:
-        'Control sampling steps for P (midpoint), Q (right quarter), and R (right endpoint) plus arc sampling steps (ts).',
+        'Adjust the sampling steps for points P (midpoint), Q (right quarter), and R (right endpoint), as well as the arc sampling steps (ts).',
       advancedWarning:
-        'Warning: changing these settings may slow down the calculations.',
+        'Warning: unchecking this may slow down calculations.',
       minimizeByLabel: 'Optimization target (usually does not affect results)',
       minimizeByMinAB: 'Minimize min(a, b)',
       minimizeByA: 'Minimize a',
@@ -57,7 +57,7 @@ const MESSAGES = {
       offsetR: 'R sampling steps',
       arcSample: 'Error sampling steps',
       skipWorse:
-        'Skip error checks when the ellipse is already larger than the current smallest',
+        'Skip error checks when the ellipse is already larger than the current smallest.',
       showAttempts: 'Show "Tried ellipse semi-axes" chart',
       disableP: 'Disable P sampling (always on arc)',
       disableR: 'Disable R sampling (always on arc)',
@@ -70,7 +70,7 @@ const MESSAGES = {
     app: {
       heroTitle: '以橢圓近似圓弧',
       heroLede:
-        '輸入圓弧的參數後，本工具會依據條件搜尋橢圓，並在圖表中顯示結果。本工具旨在用較小的橢圓近似半徑很大的一段圓弧',
+        '輸入圓弧的參數後，本工具會依據條件搜尋橢圓，並在圖表中顯示結果。本工具旨在用較小的橢圓近似半徑很大的一段圓弧。',
       status: '開發中',
       langSwitch: '語系',
       langEn: 'EN',
@@ -79,7 +79,7 @@ const MESSAGES = {
         viewportTitle: '圓與橢圓',
         animationTitle: '橢圓規演示',
         errorTitle: '各角度誤差',
-        attemptsTitle: '已嘗試的橢圓半軸',
+        attemptsTitle: '已嘗試的橢圓半軸 (a, b)',
       },
       basicSettingsTitle: '圓弧設定',
       basicSettingsHelper: '圓心角與弦長可以擇一輸入',
@@ -110,9 +110,9 @@ const MESSAGES = {
       expand: '展開',
       collapse: '收合',
       advancedHelper:
-        '控制橢圓弧上三點 P (中點), Q (右邊 1/4 處), R (右端點) 的取樣步數與弧長取樣步數 (ts)。',
-      advancedWarning: '注意：調整這些設定可能會讓計算變慢。',
-      minimizeByLabel: '搜尋目標 (通常不會影響結果)',
+        '控制橢圓弧上三點 P（中點）、Q（右側 1/4 處）、R（右端點）的取樣步數，以及弧長取樣步數（ts）。',
+      advancedWarning: '注意：取消勾選可能會讓計算變慢。',
+      minimizeByLabel: '最佳化目標 (通常不會影響結果)',
       minimizeByMinAB: 'min(a, b) 最小',
       minimizeByA: 'a 最小',
       minimizeBySum: 'a + b 最小',
@@ -121,7 +121,7 @@ const MESSAGES = {
       offsetQ: 'Q 點取樣步數',
       offsetR: 'R 點取樣步數',
       arcSample: '誤差取樣步數',
-      skipWorse: "若橢圓已比目前最小的還大則跳過誤差驗證",
+      skipWorse: "若橢圓已比目前最小的還大則跳過誤差驗證。",
       showAttempts: '顯示「已嘗試的橢圓半軸」圖表',
       disableP: '停用 P 取樣 (恆取在圓弧上)',
       disableR: '停用 R 取樣 (恆取在圓弧上)',

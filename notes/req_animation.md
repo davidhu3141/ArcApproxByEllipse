@@ -20,9 +20,9 @@
 ### 2
 
 接著用 0.8 秒顯示一個粗線段 S，標出其上三點 N1 N2 N3 (opacity 0->1)
-N1 座標 `(a*cos(t_S), h+b*sin(t_S))` 為 粗線段 S 的一端
-N2 座標 `(0, h-(a-b)*sin(t_S))` 為粗線段 S 的另一端
-N3 座標 `((a-b)*cos(t_S), h)`
+- N1 座標 `(a*cos(t_S), h+b*sin(t_S))` 為 粗線段 S 的一端
+- N2 座標 `(0, h-(a-b)*sin(t_S))` 為粗線段 S 的另一端
+- N3 座標 `((a-b)*cos(t_S), h)`
 
 此時 t_S 為 t0
 
