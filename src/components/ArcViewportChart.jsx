@@ -96,7 +96,6 @@ function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, layoutToggle, 
           cy - side / 2 * extendY
         ])
 
-      const scale = (x) => Math.abs(xScale(x) - xScale(0));
       const yAxisHasZero = centerY - size / 2 * extendY < 0;
 
       svg
@@ -124,7 +123,7 @@ function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, layoutToggle, 
           .attr('class', 'arc-path')
           .attr('cx', xScale(0))
           .attr('cy', yScale(0))
-          .attr('r', scale(r))
+          .attr('r', xScale(r) - xScale(0))
 
         const endpointsGroup = svg.append('g').attr('class', 'arc-endpoints')
           ;[startPt, endPt].forEach((pt, idx) => {
@@ -146,15 +145,17 @@ function ArcViewportChart({ radius, thetaDeg, bestEllipse, title, layoutToggle, 
 
       if (bestEllipse) {
         const { a, b, h } = bestEllipse
-        const pts = d3.range(0, 361, 2).map((deg) => {
-          const t = toRad(deg)
-          return { x: a * Math.cos(t), y: b * Math.sin(t) + h }
-        })
-        const line = d3
-          .line()
-          .x((d) => xScale(d.x))
-          .y((d) => yScale(d.y))
-        svg.append('path').attr('class', 'ellipse-path').attr('d', line(pts))
+        const cx = xScale(0)
+        const cy = yScale(h)
+        const rx = Math.abs(xScale(a) - cx)
+        const ry = Math.abs(yScale(h + b) - cy)
+        svg
+          .append('ellipse')
+          .attr('class', 'ellipse-path')
+          .attr('cx', cx)
+          .attr('cy', cy)
+          .attr('rx', rx)
+          .attr('ry', ry)
       }
     }
 
