@@ -7,9 +7,9 @@ The purpose of this project is to find small ellipses whose arcs can approximate
 
 ![](doc_assets/arcToolUse.gif)
 
-Try it: https://davidhu3141.github.io/ArcApproxByEllipse/?lang=en
+Live demo: https://davidhu3141.github.io/ArcApproxByEllipse/?lang=en
 
-This web tool supports mobile phones (RWD).
+This project is mobile-friendly (responsive design).
 
 
 
@@ -20,7 +20,7 @@ A friend of mine wanted to cut a circular arc with radius `700 cm` and chord len
 
 I do not know whether this approach fits real woodworking needs or construction scenarios, but I think this project is still interesting because it explores relationships between ellipses and circles. It might even be useful for someone, so I decided to try it.
 
-An Archimedean ellipse trammel means that you drill two nails into a wooden rod (green line below), attach a pen at another point (black dot), and let the nails slide along two perpendicular grooves (red and blue dots). The pen will trace an ellipse. The ellipse semi-major/minor axes are just the distances from the pen to each nail.
+An Archimedean ellipse trammel is an ellipse drawing tool: drill two nails into a wooden rod (green line below), attach a pen at another point (black dot), and let the nails slide along two perpendicular grooves (red and blue dots). The pen will trace an ellipse. The ellipse semi-major/minor axes are just the distances from the pen to each nail.
 
 The figure below shows the case where the pen is between the two nails.
 
