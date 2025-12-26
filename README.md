@@ -123,7 +123,7 @@ P, Q, R can each have a radial error (d1, d, d2). By default P and R sampling ar
 - case 2: skip if the ellipse center is higher than the chord (this happens when tolerance is unreasonably large; the ellipse then touches the chord at its lower edge)
 - case 3: skip if the error exceeds the tolerance (even if d1, d, d2 are within tolerance, the arc segment between P-Q or Q-R may exceed it)
 
-In general, increasing tolerance should allow a smaller ellipse. But if the tolerance is set too large (e.g. greater than 10% of the radius), the offset step size also grows, and most sampled ellipses get filtered by case 2, so the search may fail to find an ellipse smaller than the circle. Case 2 is illustrated below:
+In general, increasing tolerance should allow a smaller ellipse. But if the tolerance is set too large (e.g. greater than 10% of the radius), the offset step size also grows, and most sampled ellipses get filtered by case 2/3, so the search may fail to find an ellipse smaller than the circle. In these case you can increase the Q sampling steps (max=3000 if Disable P/R sampling enabled). Case 2 is illustrated below:
 
 ![](doc_assets/inkscape_8vuHz9RDAB.png)
 

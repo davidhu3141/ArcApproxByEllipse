@@ -56,7 +56,6 @@ export function runEllipseSearch({
   skipWorseThanBest = false,
   constrainD1ForceZero = false,
   constrainD2ForceZero = false,
-  maxStepNumber = 30,
   minimizeBy = 'minab',
 }) {
   const r = Number(radius)
@@ -73,10 +72,10 @@ export function runEllipseSearch({
   const attemptsList = []
   const chordMidY = r * Math.cos(half)
 
-  const clampOffsetsD = Math.min(Math.max(Math.round(offsetsStepsD), 2), maxStepNumber)
-  const clampOffsetsD1 = Math.min(Math.max(Math.round(offsetsStepsD1), 2), maxStepNumber)
-  const clampOffsetsD2 = Math.min(Math.max(Math.round(offsetsStepsD2), 2), maxStepNumber)
-  const clampTs = Math.min(Math.max(Math.round(tsSteps), 4), maxStepNumber)
+  const clampOffsetsD = Math.max(Math.round(offsetsStepsD), 2)
+  const clampOffsetsD1 = Math.max(Math.round(offsetsStepsD1), 2)
+  const clampOffsetsD2 = Math.max(Math.round(offsetsStepsD2), 2)
+  const clampTs = Math.max(Math.round(tsSteps), 4)
 
   const sampleOffsets = (n, allowNegative = true) => {
     const span = allowNegative ? 2 * e : e

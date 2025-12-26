@@ -46,7 +46,7 @@ const MESSAGES = {
       advancedHelper:
         'Adjust the sampling steps for points P (midpoint), Q (right quarter), and R (right endpoint), as well as the arc sampling steps (ts).',
       advancedWarning:
-        'Warning: these settings may slow down calculations.',
+        'Warning: unchecking this may slow down calculations.',
       minimizeByLabel: 'Optimization target (usually does not affect results)',
       minimizeByMinAB: 'Minimize min(a, b)',
       minimizeByA: 'Minimize a',
@@ -57,7 +57,7 @@ const MESSAGES = {
       offsetR: 'R sampling steps',
       arcSample: 'Error sampling steps',
       skipWorse:
-        'Skip error checks when the ellipse is already larger than the current smallest',
+        'Skip error checks when the ellipse is already larger than the current smallest.',
       showAttempts: 'Show "Tried ellipse semi-axes" chart',
       disableP: 'Disable P sampling (always on arc)',
       disableR: 'Disable R sampling (always on arc)',
@@ -111,7 +111,7 @@ const MESSAGES = {
       collapse: '收合',
       advancedHelper:
         '控制橢圓弧上三點 P（中點）、Q（右側 1/4 處）、R（右端點）的取樣步數，以及弧長取樣步數（ts）。',
-      advancedWarning: '注意：調整這些設定可能會讓計算變慢。',
+      advancedWarning: '注意：取消勾選可能會讓計算變慢。',
       minimizeByLabel: '最佳化目標 (通常不會影響結果)',
       minimizeByMinAB: 'min(a, b) 最小',
       minimizeByA: 'a 最小',
@@ -121,7 +121,7 @@ const MESSAGES = {
       offsetQ: 'Q 點取樣步數',
       offsetR: 'R 點取樣步數',
       arcSample: '誤差取樣步數',
-      skipWorse: "若橢圓已比目前最小的還大則跳過誤差驗證",
+      skipWorse: "若橢圓已比目前最小的還大則跳過誤差驗證。",
       showAttempts: '顯示「已嘗試的橢圓半軸」圖表',
       disableP: '停用 P 取樣 (恆取在圓弧上)',
       disableR: '停用 R 取樣 (恆取在圓弧上)',

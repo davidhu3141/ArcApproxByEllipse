@@ -13,7 +13,8 @@ const versionCode = "v1.0.0";
 const underDev = false;
 
 const isDevMode = false;
-const maxStepNumber = isDevMode ? 250 : 30;
+const maxStepNumber = isDevMode ? 60 : 30;
+const getMaxStepNumberD = (f1, f2) => (f1 && f2) ? maxStepNumber * 100 : maxStepNumber
 
 function AppContent({ t, locale, localeLinks }) {
   const [radius, setRadius] = useState('700')
@@ -24,7 +25,7 @@ function AppContent({ t, locale, localeLinks }) {
     return (2 * r * Math.sin(toRad(t / 2))).toFixed(4)
   })
   const [tolerance, setTolerance] = useState('0.4')
-  const [offsetStepsD, setOffsetStepsD] = useState('25')
+  const [offsetStepsD, setOffsetStepsD] = useState('200')
   const [offsetStepsD1, setOffsetStepsD1] = useState('10')
   const [offsetStepsD2, setOffsetStepsD2] = useState('10')
   const [tsSteps, setTsSteps] = useState('20')
@@ -52,6 +53,7 @@ function AppContent({ t, locale, localeLinks }) {
   const readmeHref = locale === 'zh-tw'
     ? 'https://github.com/davidhu3141/ArcApproxByEllipse/blob/main/README%20(zh-tw).md'
     : 'https://github.com/davidhu3141/ArcApproxByEllipse/blob/main/README.md'
+  const maxStepNumberD = getMaxStepNumberD(forceZeroD1, forceZeroD2)
 
   const bestTarget = (() => {
     if (!bestAttempt) return null
@@ -116,7 +118,6 @@ function AppContent({ t, locale, localeLinks }) {
       skipWorseThanBest: skipWorse,
       constrainD1ForceZero: forceZeroD1,
       constrainD2ForceZero: forceZeroD2,
-      maxStepNumber,
       minimizeBy,
     })
     setAttempts(a)
@@ -369,9 +370,6 @@ function AppContent({ t, locale, localeLinks }) {
             <p className="helper-text">
               {t('app.advancedHelper')}
             </p>
-            <p className="helper-text helper-text--warning">
-              {t('app.advancedWarning')}
-            </p>
             <div className="input-grid">
               <label className="field">
                 <span>{t('app.offsetP')}</span>
@@ -380,7 +378,7 @@ function AppContent({ t, locale, localeLinks }) {
                   min="2"
                   max={maxStepNumber}
                   value={offsetStepsD1}
-                  onChange={(e) => setOffsetStepsD1(e.target.value)}
+                  onChange={(e) => setOffsetStepsD1(Math.min(e.target.value, maxStepNumber))}
                   placeholder={`2 - ${maxStepNumber}`}
                   disabled={forceZeroD1}
                 />
@@ -390,10 +388,10 @@ function AppContent({ t, locale, localeLinks }) {
                 <input
                   type="number"
                   min="2"
-                  max={maxStepNumber}
+                  max={maxStepNumberD}
                   value={offsetStepsD}
-                  onChange={(e) => setOffsetStepsD(e.target.value)}
-                  placeholder={`2 - ${maxStepNumber}`}
+                  onChange={(e) => setOffsetStepsD(Math.min(e.target.value, maxStepNumberD))}
+                  placeholder={`2 - ${maxStepNumberD}`}
                 />
               </label>
               <label className="field">
@@ -403,7 +401,7 @@ function AppContent({ t, locale, localeLinks }) {
                   min="2"
                   max={maxStepNumber}
                   value={offsetStepsD2}
-                  onChange={(e) => setOffsetStepsD2(e.target.value)}
+                  onChange={(e) => setOffsetStepsD2(Math.min(e.target.value, maxStepNumber))}
                   placeholder={`2 - ${maxStepNumber}`}
                   disabled={forceZeroD2}
                 />
@@ -425,7 +423,10 @@ function AppContent({ t, locale, localeLinks }) {
                   checked={skipWorse}
                   onChange={(e) => setSkipWorse(e.target.checked)}
                 />
-                <span>{t('app.skipWorse')}</span>
+                <span>
+                  {t('app.skipWorse') + " "}
+                  <span style={{ color: "#ffd666" }}>{t('app.advancedWarning')}</span>
+                </span>
               </label>
               <label className="field checkbox-field">
                 <input
@@ -439,7 +440,12 @@ function AppContent({ t, locale, localeLinks }) {
                 <input
                   type="checkbox"
                   checked={forceZeroD1}
-                  onChange={(e) => setForceZeroD1(e.target.checked)}
+                  onChange={(e) => {
+                    const newForceD1 = e.target.checked
+                    const newMaxD = getMaxStepNumberD(newForceD1, forceZeroD2)
+                    setForceZeroD1(newForceD1)
+                    setOffsetStepsD(Math.min(newMaxD, offsetStepsD))
+                  }}
                 />
                 <span>{t('app.disableP')}</span>
               </label>
@@ -447,7 +453,12 @@ function AppContent({ t, locale, localeLinks }) {
                 <input
                   type="checkbox"
                   checked={forceZeroD2}
-                  onChange={(e) => setForceZeroD2(e.target.checked)}
+                  onChange={(e) => {
+                    const newForceD2 = e.target.checked
+                    const newMaxD = getMaxStepNumberD(newForceD2, forceZeroD1)
+                    setForceZeroD2(newForceD2)
+                    setOffsetStepsD(Math.min(newMaxD, offsetStepsD))
+                  }}
                 />
                 <span>{t('app.disableR')}</span>
               </label>
