@@ -43,7 +43,7 @@ README.md
 
 接著指定一個容許值 (tolerance) ，則此工具會找到一個與圓弧接近，且儘量小的橢圓。該橢圓與圓弧雖有些偏離，但誤差小於容許值。
 
-![](doc_assets/inkscape_CQt9wvgW1E.png)
+![](doc_assets/inkscape_5eIzsUWtOL.png)
 
 加大容許值有利於找到更小的橢圓，但不建議將容許值設定為大於半徑的 10% (例如 R=700, tolerance=70)，因為這會導致此工具將一些不合理的橢圓納入候選，進而排擠掉合理的橢圓被找到的機會。
 

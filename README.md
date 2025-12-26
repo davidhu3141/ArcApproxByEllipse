@@ -43,7 +43,7 @@ Consider a circular arc with radius R and central angle *theta*. You can enter e
 
 Then set a tolerance. This tool will find an ellipse close to the arc and as small as possible. The ellipse deviates slightly from the arc, but the error stays within the tolerance.
 
-![](doc_assets/inkscape_CQt9wvgW1E.png)
+![](doc_assets/inkscape_5eIzsUWtOL.png)
 
 A larger tolerance helps find smaller ellipses, but I do not recommend setting tolerance greater than 10% of the radius (e.g. R=700, tolerance=70), because it makes the tool consider unreasonable ellipses and can block reasonable candidates.
 
